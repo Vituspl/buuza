@@ -1,0 +1,294 @@
+<template>
+  <DrawerHead/>
+
+  <!--  Показываем компонент <InfoBlock> по условию  -->
+  <div v-if="!cartTotalCost || orderDone" class="flex h-full items-center">
+    <!--  Показать при условии  -->
+    <CartEmpty
+        v-if="!cartTotalCost && !orderDone"
+        title="Ваша Корзина пустая"
+        description="Добавьте хотя бы одно блюдо, чтобы сделать заказ"
+        image-url="/package-icon.png"
+    />
+    <!--  Показать при условии  -->
+    <CartEmpty
+        v-if="orderDone"
+        title="Заказ оформлен"
+        :description="`Ваш заказ №${orderDone} от ${date} скоро будет передан курьерской доставке`"
+        image-url="/order-success-icon.png"
+    />
+  </div>
+
+  <div v-else>
+    <cart-item
+        v-for="(item, index) in cart"
+        :key="item.id"
+        :id="item.id"
+        :quantity="item.quantity"
+        :title="item.title"
+        :price="item.price"
+        :image-url="item.imageUrl"
+        :ingredients="item.ingredients"
+        @deleteFromCart="deleteFromCart(index)"
+        @increment="increment(index)"
+        @decrement="decrement(index)"
+    />
+
+    <div class="flex-1 flex-col gap-4 my-7">
+      <div class="flex gap-2">
+        <span>Итого:</span>
+        <div class="flex-1 border-b border-dashed"></div>
+        <b>{{ cartTotalCost }} &#8381;</b>
+      </div>
+
+      <button
+          :disabled="buttonDisabled"
+          @click="createOrder"
+          class="mt-4
+          transition
+          bg-lime-500
+          w-full
+          rounded-xl
+          py-3
+          text-white
+          hover:bg-lime-600
+          active:bg-lime-700
+          disabled:bg-slate-300
+          cursor-pointer"
+      >
+        Оформить заказ
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import CartItem from '@/components/CartItem.vue';
+import DrawerHead from '@/components/DrawerHead.vue';
+import CartEmpty from '@/components/CartEmpty.vue'
+import {mapActions, mapGetters, useStore} from 'vuex';
+import {computed, ref} from 'vue';
+import axios from 'axios';
+
+    const store = useStore();
+
+    const cart = computed(function () {
+      return store.state.cart;
+    });
+
+    const cartTotalCost = computed(function () {
+      let result = [];
+      if (cart.value.length) {
+        for (let item of cart.value) {
+          result.push(item.price * item.quantity);
+        }
+        result = result.reduce(function (sum, el) {
+          return sum + el;
+        });
+        return result;
+      } else {
+        return 0;
+      }
+    });
+
+    const increment = (index) => {
+      store.commit('INCREMENT', index);
+    };
+    const decrement = (index) => {
+      store.commit('DECREMENT', index);
+    };
+    const deleteFromCart = (index) => {
+      store.commit('REMOVE_FROM_CART', index);
+    };
+
+// Текущая дата без времени
+let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
+
+const isCreating = ref(false);
+const orderDone = ref(null);
+
+// Определяем пустую Корзину
+const cartIsEmpty = computed(() => cart.value.length === 0);
+// Деактивируем кнопку "Оформить заказ"
+const buttonDisabled = computed(() =>
+    isCreating.value || cartIsEmpty.value);
+
+// Функция передает POST запрос на сервер, при оформлении заказа, с массивом cart и ключом items
+const createOrder = async () => {
+  try {
+    isCreating.value = true;
+
+    const {data} = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
+          items: cart.value,
+          descriptionOrder: `Дата заказа ${date}`,
+          totalPrice: `Общая стоимость заказа  ${cartTotalCost.value} рублей`,
+        },
+    );
+// Очищает Корзину после оформления заказа
+//     cart.value = [];
+
+      store.commit('CLEAR_CART');
+
+// Получаем номер выполненного заказа в виде id
+    orderDone.value = data.id;
+    console.log(orderDone.value);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isCreating.value = false;
+  }
+};
+
+</script>
+
+<style scoped>
+
+</style>
+
+<!--
+<script>
+import CartItem from '@/components/CartItem.vue';
+import DrawerHead from '@/components/DrawerHead.vue';
+import {mapActions, mapGetters} from 'vuex';
+
+export default {
+  name: "Cart",
+  components: {
+    CartItem,
+    DrawerHead,
+  },
+
+  // Вычисляемое свойство cartTotalCost.
+  // Создадим пустой массив, который будем возвращать.
+  // Проверяем: если массив this.cart_data не пустой
+  // Циклом пробежим по массиву this.cart_data.
+  // Пушим в result цену товара умноженную на количество товара в корзине.
+  // Потом все итоговые суммы цен товаров в корзине мы складываем reduce.
+  computed: {
+    ...mapGetters([
+      'PRODUCTS',
+      'CART',
+      'cartTotalCost'
+    ]),
+    cartTotalCost() {
+      let result = [];
+
+      if (this.CART.length) {
+        for (let item of this.CART) {
+          result.push(item.price * item.quantity);
+        }
+
+        result = result.reduce(function (sum, el) {
+          return sum + el;
+        });
+        return result;
+      } else {
+        return 0;
+      }
+    }
+  },
+  methods: {
+    ...mapActions([
+      'DELETE_FROM_CART',
+      'INCREMENT_CART_ITEM',
+      'DECREMENT_CART_ITEM',
+      // 'ADD_TO_CART',
+    ]),
+    // Здесь в к-те мы ловим ф-ии и диспатчим их
+    increment(index) {
+      this.INCREMENT_CART_ITEM(index);
+    },
+    decrement(index) {
+      this.DECREMENT_CART_ITEM(index);
+    },
+    deleteFromCart(index) {
+      this.DELETE_FROM_CART(index);
+    },
+    /*addToCart(index) {
+      this.ADD_TO_CART(index);
+    },*/
+  }
+};
+</script>
+
+<style lang="scss">
+.v-cart {
+  margin-bottom: 100px;
+
+  &__total {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
+    background: #26ae68;
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  .total__name {
+    margin-right: 16px;
+  }
+}
+</style>-->
+
+<!--<script>
+import CartItem from '@/components/CartItem.vue';
+import DrawerHead from '@/components/DrawerHead.vue';
+import {mapActions, mapGetters, useStore} from 'vuex';
+import {computed} from 'vue';
+
+export default {
+  name: "Cart",
+  components: {
+    CartItem,
+    DrawerHead,
+  },
+  setup() {
+    const store = useStore();
+
+    const cart = computed(function () {
+      return store.state.cart;
+    });
+
+    const cartTotalCost = computed(function () {
+      let result = [];
+      if (cart.value.length) {
+        for (let item of cart.value) {
+          result.push(item.price * item.quantity);
+        }
+        result = result.reduce(function (sum, el) {
+          return sum + el;
+        });
+        return result;
+      } else {
+        return 0;
+      }
+    });
+
+    const increment = (index) => {
+      store.commit('INCREMENT', index);
+    };
+    const decrement = (index) => {
+      store.commit('DECREMENT', index);
+    };
+    const deleteFromCart = (index) => {
+      store.commit('REMOVE_FROM_CART', index);
+    };
+
+    return {
+      cart,
+      cartTotalCost,
+      increment,
+      decrement,
+      deleteFromCart,
+    };
+  }
+};
+</script>
+
+<style scoped>
+
+</style>-->

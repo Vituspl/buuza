@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:realworld="http://www.rw-designer.com/export-svg" width="32px" height="32px">
+  <g>
+    <rect fill="#ffffff" height="31" rx="7.5" ry="7.5" stroke="#dbdbdb" width="31" x="0.5" y="0.5" />
+    <path d="M 20.0799 18.6155L 17.6311 16.1667L 20.0798 13.718C 21.0241 12.7738 19.5596 11.3093 18.6154 12.2536L 16.1667 14.7023L 13.7179 12.2535C 12.7738 11.3095 11.3095 12.7738 12.2535 13.7179L 14.7023 16.1667L 12.2536 18.6154C 11.3093 19.5596 12.7738 21.0241 13.718 20.0798L 16.1667 17.6311L 18.6155 20.0799C 19.5597 21.0241 21.0241 19.5597 20.0799 18.6155 z" fill="#b5b5b5" fill-rule="evenodd" />
+  </g>
+</svg>

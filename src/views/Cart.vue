@@ -1,4 +1,5 @@
 <template>
+  <AppFigure/>
   <DrawerHead/>
 
   <!--  Показываем компонент <InfoBlock> по условию  -->
@@ -35,9 +36,9 @@
     />
 
     <div class="flex-1 flex-col gap-4 my-7">
-      <div class="flex gap-2">
-        <span>Итого:</span>
-        <div class="flex-1 border-b border-dashed"></div>
+      <div class="flex gap-2 text-xl text-blue-700">
+        <b>Стоимость заказа:</b>
+        <div class="flex-1 border-b-blue-500 border-b-2 border-dashed color"></div>
         <b>{{ cartTotalCost }} &#8381;</b>
       </div>
 
@@ -69,6 +70,7 @@ import CartEmpty from '@/components/CartEmpty.vue'
 import {mapActions, mapGetters, useStore} from 'vuex';
 import {computed, ref} from 'vue';
 import axios from 'axios';
+import AppFigure from '@/components/AppFigure.vue';
 
     const store = useStore();
 

@@ -20,7 +20,7 @@ const clearDrawer = ()=>{
     <router-link to='/'>
     <div class="flex items-center cursor-pointer gap-5 mb-8 mt-4 ml-2">
       <img
-          class="opacity-30 cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
+          class="cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
           src="/arrow-left.svg"
           alt="arrow"/>
 

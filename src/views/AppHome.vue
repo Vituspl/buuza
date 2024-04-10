@@ -106,25 +106,13 @@ const fetchProducts = async () => {
 };
 
 onMounted(() => {
-  // const localCart = localStorage.getItem('cart');
-  // cart.value = localCart ? JSON.parse(localCart) : [];
-  // cart.value = JSON.parse(localStorage.getItem('cart') || '[]')
-
-   fetchProducts();
+     fetchProducts();
 });
 
 // Этот watch следит, что Все Меню меняется, то все items сохраняются в localStorage.
 watch(products,
     () => {
       localStorage.setItem('products', JSON.stringify(products.value));
-    },
-    {deep: true}
-);
-
-// Этот watch следит, что если корзина меняется, то все item сохраняются в localStorage.
-watch(cart,
-    () => {
-      localStorage.setItem('cart', JSON.stringify(cart.value));
     },
     {deep: true}
 );

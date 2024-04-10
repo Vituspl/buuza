@@ -949,7 +949,8 @@ export const store = createStore({
         //         "price": 39
         //     }
         // ],
-        cart: [],
+        // cart: [],
+        cart: JSON.parse(localStorage.getItem("cart")),
         quantity: 0,
         total: 0,
     },
@@ -964,14 +965,17 @@ export const store = createStore({
             product.quantity = 1;
             product.isAdded = true;
             console.log(state.cart);
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
 
         CLEAR_CART: (state) => {
             state.cart = [];
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
 
         REMOVE_FROM_CART: (state, index) => {
             state.cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
         INCREMENT: (state, index) => {
             state.cart[index].quantity++;
@@ -985,7 +989,7 @@ export const store = createStore({
     // Акшены - асинхронны
     actions: {
         /*GET_PRODUCTS_FROM_API({commit}) {
-            return axios('https://1102df40d9a2f61e.mokky.dev/products', {
+            return axios('https://9b25d366b1aceedb.mokky.dev/products', {
                 method: "GET"
             })
                 .then((products) => {
@@ -1004,7 +1008,7 @@ export const store = createStore({
         },*/
         /*async GET_PRODUCTS_FROM_API({commit}) {
             try {
-                await axios.get('https://1102df40d9a2f61e.mokky.dev/products')
+                await axios.get('https://9b25d366b1aceedb.mokky.dev/products')
                     .then((products) => {
                         // Добавляем количество товаров в объект
                         products.data.map((item) => {

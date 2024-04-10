@@ -28,9 +28,9 @@ const props = defineProps(['product']);
 
 const emit = defineEmits(['addToCart']);
 
-const store = useStore();
+/*const store = useStore();
 
-const cart = computed(() => store.getters.CART);
+const cart = computed(() => store.getters.CART);*/
 
 function addToCart() {
   emit('addToCart');

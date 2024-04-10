@@ -15,12 +15,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-   server: {
+   /*server: {
       port: 5001,
-      /* watch: {
+      /!* watch: {
            usePolling: true,
-       }*/
-    },
+       }*!/
+    },*/
 
     // starts preview server on port 5678
     preview: {

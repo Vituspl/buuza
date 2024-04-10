@@ -1,16 +1,3 @@
-<script setup>
-import {useStore} from 'vuex';
-import {computed} from 'vue';
-
-defineProps({
-  totalPrice: Number,
-})
-
-// const emits = defineEmits(['openDrawer']);
-const store = useStore();
-const cart = computed(() => store.getters.CART);
-</script>
-
 <template>
   <header>
     <div class="logo">
@@ -26,13 +13,19 @@ const cart = computed(() => store.getters.CART);
   </header>
 </template>
 
+<script setup>
+import {useStore} from 'vuex';
+import {computed} from 'vue';
+
+defineProps({
+  totalPrice: Number,
+})
+
+const store = useStore();
+const cart = computed(() => store.getters.CART);
+</script>
 
 <style scoped>
 
 </style>
 
-<!--
-<button class="btn btn__cart" @click="()=>emits('openDrawer')">
-<img src="/images/cart-empty_white.png" width="30px" height="30px" alt="">
-<span class="price text-base font-bold ml-2">{{ totalPrice }} &#8381;</span>
-</button>-->

@@ -1,5 +1,46 @@
-<script>
+<template>
+  <div class="flex flex-col bg-gray-400/60 item-center border border-slate-200 p-4 rounded-xl gap-2 mb-2">
+    <div class="flex item-center bg-white shadow-lg border border-slate-200 p-4 rounded-xl gap-2 mb-2">
+      <img class="w-28 h-28" :src="imageUrl" :alt="title"/>
 
+      <div class="flex flex-col flex-1">
+        <b class="pl-4">{{ title }}</b>
+
+        <p class="pl-4">"{{ ingredients }}"</p>
+
+        <div class="flex justify-between pl-4 mt-2">
+          <b class="flex">{{ price }} руб.</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="
+        flex
+        justify-between
+        flex-nowrap
+        items-center"
+    >
+      <div class="v-cart-item__quantity">
+        <b>Количество:</b>
+        <span>
+          <span class="quantity__btn" @click="decrementItem">-</span>
+          {{ quantity }}
+          <span class="quantity__btn" @click="incrementItem">+</span>
+          </span>
+      </div>
+
+      <a @click="deleteFromCart">
+        <img
+            class="opacity-100 color:red  hover:opacity-100 cursor-pointer transition"
+            src="/close-full-red-48.svg"
+            alt="Close"
+        />
+      </a>
+    </div>
+  </div>
+</template>
+
+<script>
 export default {
   name: 'cart-item',
   components: {},
@@ -32,50 +73,6 @@ export default {
   }
 }
 </script>
-
-<template>
-  <div class="flex flex-col bg-gray-400/60 item-center border border-slate-200 p-4 rounded-xl gap-2 mb-2">
-    <div class="flex item-center bg-white shadow-lg border border-slate-200 p-4 rounded-xl gap-2 mb-2">
-      <img class="w-28 h-28" :src="imageUrl" :alt="title"/>
-
-      <div class="flex flex-col flex-1">
-        <b class="pl-4">{{ title }}</b>
-
-        <p class="pl-4">"{{ ingredients }}"</p>
-
-        <div class="flex justify-between pl-4 mt-2">
-          <b class="flex">{{ price }} руб.</b>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="
-        flex
-        justify-between
-        flex-nowrap
-        items-center"
-    >
-      <div class="v-cart-item__quantity">
-        <b>Количество:</b>
-        <span>
-          <span class="quantity__btn" @click="decrementItem">-</span>
-          {{ quantity }}
-          <span class="quantity__btn" @click="incrementItem">+</span>
-          </span>
-      </div>
-
-      <a @click="deleteFromCart">
-        <img
-            class="opacity-100 color:red  hover:opacity-100 cursor-pointer transition"
-            src="/close-full-red-48.svg"
-            alt="Close"
-        />
-      </a>
-    </div>
-  </div>
-</template>
-
 
 <style lang="scss">
 .v-cart-item__quantity {

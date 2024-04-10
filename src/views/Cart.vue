@@ -67,7 +67,7 @@
 import CartItem from '@/components/CartItem.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
 import CartEmpty from '@/components/CartEmpty.vue'
-import {mapActions, mapGetters, useStore} from 'vuex';
+import {useStore} from 'vuex';
 import {computed, ref} from 'vue';
 import axios from 'axios';
 import AppFigure from '@/components/AppFigure.vue';
@@ -127,8 +127,6 @@ const createOrder = async () => {
         },
     );
 // Очищает Корзину после оформления заказа
-//     cart.value = [];
-
       store.commit('CLEAR_CART');
 
 // Получаем номер выполненного заказа в виде id
@@ -140,157 +138,8 @@ const createOrder = async () => {
     isCreating.value = false;
   }
 };
-
 </script>
 
 <style scoped>
 
 </style>
-
-<!--
-<script>
-import CartItem from '@/components/CartItem.vue';
-import DrawerHead from '@/components/DrawerHead.vue';
-import {mapActions, mapGetters} from 'vuex';
-
-export default {
-  name: "Cart",
-  components: {
-    CartItem,
-    DrawerHead,
-  },
-
-  // Вычисляемое свойство cartTotalCost.
-  // Создадим пустой массив, который будем возвращать.
-  // Проверяем: если массив this.cart_data не пустой
-  // Циклом пробежим по массиву this.cart_data.
-  // Пушим в result цену товара умноженную на количество товара в корзине.
-  // Потом все итоговые суммы цен товаров в корзине мы складываем reduce.
-  computed: {
-    ...mapGetters([
-      'PRODUCTS',
-      'CART',
-      'cartTotalCost'
-    ]),
-    cartTotalCost() {
-      let result = [];
-
-      if (this.CART.length) {
-        for (let item of this.CART) {
-          result.push(item.price * item.quantity);
-        }
-
-        result = result.reduce(function (sum, el) {
-          return sum + el;
-        });
-        return result;
-      } else {
-        return 0;
-      }
-    }
-  },
-  methods: {
-    ...mapActions([
-      'DELETE_FROM_CART',
-      'INCREMENT_CART_ITEM',
-      'DECREMENT_CART_ITEM',
-      // 'ADD_TO_CART',
-    ]),
-    // Здесь в к-те мы ловим ф-ии и диспатчим их
-    increment(index) {
-      this.INCREMENT_CART_ITEM(index);
-    },
-    decrement(index) {
-      this.DECREMENT_CART_ITEM(index);
-    },
-    deleteFromCart(index) {
-      this.DELETE_FROM_CART(index);
-    },
-    /*addToCart(index) {
-      this.ADD_TO_CART(index);
-    },*/
-  }
-};
-</script>
-
-<style lang="scss">
-.v-cart {
-  margin-bottom: 100px;
-
-  &__total {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: center;
-    background: #26ae68;
-    color: #ffffff;
-    font-size: 20px;
-  }
-
-  .total__name {
-    margin-right: 16px;
-  }
-}
-</style>-->
-
-<!--<script>
-import CartItem from '@/components/CartItem.vue';
-import DrawerHead from '@/components/DrawerHead.vue';
-import {mapActions, mapGetters, useStore} from 'vuex';
-import {computed} from 'vue';
-
-export default {
-  name: "Cart",
-  components: {
-    CartItem,
-    DrawerHead,
-  },
-  setup() {
-    const store = useStore();
-
-    const cart = computed(function () {
-      return store.state.cart;
-    });
-
-    const cartTotalCost = computed(function () {
-      let result = [];
-      if (cart.value.length) {
-        for (let item of cart.value) {
-          result.push(item.price * item.quantity);
-        }
-        result = result.reduce(function (sum, el) {
-          return sum + el;
-        });
-        return result;
-      } else {
-        return 0;
-      }
-    });
-
-    const increment = (index) => {
-      store.commit('INCREMENT', index);
-    };
-    const decrement = (index) => {
-      store.commit('DECREMENT', index);
-    };
-    const deleteFromCart = (index) => {
-      store.commit('REMOVE_FROM_CART', index);
-    };
-
-    return {
-      cart,
-      cartTotalCost,
-      increment,
-      decrement,
-      deleteFromCart,
-    };
-  }
-};
-</script>
-
-<style scoped>
-
-</style>-->

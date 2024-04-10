@@ -1,3 +1,34 @@
+<template>
+  <aside>
+    <div class="items">
+      <button
+          v-for="value in categoryes"
+          :key="value.category"
+          :src="value.src"
+          class="btn item"
+          @click="sendCategory(value.name)"
+      >
+        <span>{{ value.name }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="row">
+    <div class="items">
+      <button
+          v-for="value in categoryes"
+          :key="value.category"
+          :src="value.src"
+          class="btn item"
+          @click="sendCategory(value.name)"
+      >
+        <img :src="value.src" width="40px" height="40px" alt=""/>
+        <p>{{ value.name }}</p>
+      </button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 
 defineProps({
@@ -33,53 +64,20 @@ const categoryes = [
 ];
 </script>
 
-<template>
-  <aside>
-    <div class="items">
-      <button
-          v-for="value in categoryes"
-          :key="value.category"
-          :src="value.src"
-          class="btn item"
-          @click="sendCategory(value.name)"
-      >
-        <span>{{ value.name }}</span>
-      </button>
-    </div>
-  </aside>
-
-  <div class="row">
-    <div class="items">
-      <button
-          v-for="value in categoryes"
-          :key="value.category"
-          :src="value.src"
-          class="btn item"
-          @click="sendCategory(value.name)"
-      >
-        <img :src="value.src" width="40px" height="40px" alt=""/>
-        <p>{{ value.name }}</p>
-      </button>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 .btn {
   display: block;
 }
 
 img {
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
 }
 
 p {
-  margin: 0 auto;
   color: #00FF00;
   font-size: 14px;
   white-space: pre-wrap;
-  margin-bottom: 5px;
+  margin: 0 auto 5px;
 }
 </style>
 

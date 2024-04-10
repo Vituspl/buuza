@@ -15,8 +15,6 @@
           :active-category="activeCategory"
           @set-category="setCategory"
       />
-
-      <!--        @add-to-cart="addToCart"-->
     </section>
     <AppFooter/>
   </div>
@@ -30,20 +28,18 @@ import AppAside from '@/components/AppAside.vue';
 import CardList from '@/components/CardList.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import {computed, onMounted, provide, ref, watch} from 'vue';
-import {mapActions, mapGetters, useStore} from 'vuex';
+import {useStore} from 'vuex';
 import axios from 'axios';
-import {shallowRef} from 'vue';
-import cart from '@/views/Cart.vue';
 
-// const store = useStore();
-// const products = computed(()=>store.getters.PRODUCTS);
-// const cart = computed(()=>store.getters.CART);
+const store = useStore();
+const cart = computed(()=>store.getters.CART);
 // console.log(cart);
 
-// const products = ref([]);
-// Получаю products из localStorage
-const products = ref(JSON.parse(localStorage.getItem("products")));
+const products = ref([]);
 // console.log(products);
+
+// Получаю products из localStorage
+// const products = ref(JSON.parse(localStorage.getItem("products")));
 
 const activeCategory = ref('Все Меню');
 
@@ -95,8 +91,6 @@ const filterMenu = computed(
     }
 );
 
-// const fetchProducts = mapActions(['GET_PRODUCTS_FROM_API']);
-
 const fetchProducts = async () => {
   try {
     const {data} = await axios.get('https://1102df40d9a2f61e.mokky.dev/products');
@@ -111,12 +105,11 @@ const fetchProducts = async () => {
 };
 
 onMounted(() => {
-  const localCart = localStorage.getItem('cart');
-  cart.value = localCart ? JSON.parse(localCart) : [];
+  // const localCart = localStorage.getItem('cart');
+  // cart.value = localCart ? JSON.parse(localCart) : [];
+  // cart.value = JSON.parse(localStorage.getItem('cart') || '[]')
 
-  // let products = JSON.parse(localStorage.getItem("products"));
-
-  // fetchProducts();
+   fetchProducts();
 });
 
 // Этот watch следит, что Все Меню меняется, то все items сохраняются в localStorage.
@@ -126,18 +119,20 @@ watch(products,
     },
     {deep: true}
 );
+
+// Этот watch следит, что если корзина меняется, то все item сохраняются в localStorage.
+watch(cart,
+    () => {
+      localStorage.setItem('cart', JSON.stringify(cart.value));
+    },
+    {deep: true}
+);
+
 // Предоставляем данные для дочерних компонентов
 provide('cartActions', {
   products,
-  // cart,
+  cart,
   activeCategory,
-  // closeDrawer,
-  // openDrawer,
-  // clearDrawer,
-  // addToCart,
-  // removeFromCart,
-  // totalPrice,
-  // taxPrice,
 });
 </script>
 
@@ -145,15 +140,3 @@ provide('cartActions', {
 
 </style>
 
-<!--
-const activeCategory = ref('Все Меню');
-
-const setCategory = (category) => {
-activeCategory.value = category;
-};-->
-
-<!--
-const store = useStore();
-const storeFns = mapGetters(['booksPrice'])
--->
-<!--const vvv = mapActions(['delayChangeCount'])-->

@@ -1,22 +1,6 @@
-<script setup>
-import {computed, inject} from 'vue';
-import {useStore} from 'vuex';
-
-// const {closeDrawer, clearDrawer} = inject('cartActions');
-
-const store = useStore()
-const cart = computed(()=>store.getters.CART);
-
-
-// Очищает корзину
-const clearDrawer = ()=>{
-  store.commit('CLEAR_CART');
-}
-</script>
-
 <template>
   <div class="flex items-center gap-5 mb-8 mt-4 ml-2">
-    <!-- Обернем стрелку svg в тег <a> для клика   -->
+
     <router-link to='/'>
     <div class="flex items-center cursor-pointer gap-5 mb-8 mt-4 ml-2">
       <img
@@ -37,15 +21,21 @@ const clearDrawer = ()=>{
           alt="Clear Cart"
       />
     </a>
-<!--    <img
-        class="cursor-pointer mb-8 mt-4 ml-14"
-        src="/clear-cart-50.svg"
-        width="30px"
-        height="30px"
-        alt="Clear Cart"
-    />-->
   </div>
 </template>
+
+<script setup>
+import {computed} from 'vue';
+import {useStore} from 'vuex';
+
+const store = useStore()
+const cart = computed(()=>store.getters.CART);
+
+// Очищает корзину
+const clearDrawer = ()=>{
+  store.commit('CLEAR_CART');
+}
+</script>
 
 <style scoped>
 

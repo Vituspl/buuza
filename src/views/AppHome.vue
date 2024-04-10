@@ -35,6 +35,7 @@ const store = useStore();
 const cart = computed(()=>store.getters.CART);
 // console.log(cart);
 
+// Получаю products через get запрос на сервер.
 const products = ref([]);
 // console.log(products);
 

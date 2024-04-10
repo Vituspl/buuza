@@ -120,7 +120,7 @@ const createOrder = async () => {
   try {
     isCreating.value = true;
 
-    const {data} = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
+    const {data} = await axios.post(`https://9b25d366b1aceedb.mokky.dev/orders`, {
           items: cart.value,
           descriptionOrder: `Дата заказа ${date}`,
           totalPrice: `Общая стоимость заказа  ${cartTotalCost.value} рублей`,

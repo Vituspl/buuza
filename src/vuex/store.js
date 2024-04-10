@@ -985,7 +985,7 @@ export const store = createStore({
     // Акшены - асинхронны
     actions: {
         /*GET_PRODUCTS_FROM_API({commit}) {
-            return axios('https://1102df40d9a2f61e.mokky.dev/products', {
+            return axios('https://9b25d366b1aceedb.mokky.dev/products', {
                 method: "GET"
             })
                 .then((products) => {
@@ -1004,7 +1004,7 @@ export const store = createStore({
         },*/
         /*async GET_PRODUCTS_FROM_API({commit}) {
             try {
-                await axios.get('https://1102df40d9a2f61e.mokky.dev/products')
+                await axios.get('https://9b25d366b1aceedb.mokky.dev/products')
                     .then((products) => {
                         // Добавляем количество товаров в объект
                         products.data.map((item) => {

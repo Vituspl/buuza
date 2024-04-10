@@ -94,7 +94,7 @@ const filterMenu = computed(
 
 const fetchProducts = async () => {
   try {
-    const {data} = await axios.get('https://1102df40d9a2f61e.mokky.dev/products');
+    const {data} = await axios.get('https://9b25d366b1aceedb.mokky.dev/products');
     products.value = data.map((obj) => ({
       ...obj,
       isAdded: false,

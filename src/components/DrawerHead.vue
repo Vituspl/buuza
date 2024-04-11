@@ -25,11 +25,9 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
 import {useStore} from 'vuex';
 
 const store = useStore()
-const cart = computed(()=>store.getters.CART);
 
 // Очищает корзину
 const clearDrawer = ()=>{

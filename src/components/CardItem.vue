@@ -9,28 +9,29 @@
     <div class="weight">Стоимость <b class="text-blue-700"> {{ props.product.price }} &#8381;</b></div>
 
     <div>
-        <button
-            id="myBtn"
-            class="btn price-add btn-block"
-            @click.prevent="addToCart()"
-        >
-          <b>В Корзину</b>
-        </button>
+      <button
+          v-if="!props.product.isAdded"
+          class="btn price-add"
+          @click.stop="addToCart()"
+      >
+        <b>В Корзину</b>
+      </button>
+
+      <button
+          v-else
+          class="btn price-added"
+      >
+        <b>Уже в Корзине</b>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import {useStore} from 'vuex';
-import {computed} from 'vue';
 
 const props = defineProps(['product']);
 
 const emit = defineEmits(['addToCart']);
-
-/*const store = useStore();
-
-const cart = computed(() => store.getters.CART);*/
 
 function addToCart() {
   emit('addToCart');

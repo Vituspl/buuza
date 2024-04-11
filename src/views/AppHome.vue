@@ -29,15 +29,14 @@ import CardList from '@/components/CardList.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import {computed, onMounted, provide, ref, watch} from 'vue';
 import {useStore} from 'vuex';
-import axios from 'axios';
+// import axios from 'axios';
 
 const store = useStore();
-const cart = computed(()=>store.getters.CART);
-// console.log(cart);
+// Получаю products из store
+const products = computed(() => store.getters.PRODUCTS);
 
 // Получаю products через get запрос на сервер.
-const products = ref([]);
-// console.log(products);
+// const products = ref([])
 
 // Получаю products из localStorage
 // const products = ref(JSON.parse(localStorage.getItem("products")));
@@ -92,7 +91,7 @@ const filterMenu = computed(
     }
 );
 
-const fetchProducts = async () => {
+/*const fetchProducts = async () => {
   try {
     const {data} = await axios.get('https://1102df40d9a2f61e.mokky.dev/products');
     products.value = data.map((obj) => ({
@@ -103,10 +102,14 @@ const fetchProducts = async () => {
   } catch (err) {
     console.log(err);
   }
+};*/
+
+const fetchProducts = async () => {
+  await store.dispatch('GET_PRODUCTS_FROM_API');
 };
 
 onMounted(() => {
-     fetchProducts();
+  fetchProducts();
 });
 
 // Этот watch следит, что Все Меню меняется, то все items сохраняются в localStorage.
@@ -120,7 +123,7 @@ watch(products,
 // Предоставляем данные для дочерних компонентов
 provide('cartActions', {
   products,
-  cart,
+  // cart,
   activeCategory,
 });
 </script>

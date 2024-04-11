@@ -2,12 +2,13 @@
 // import Vuex from 'vuex';
 // import axios from 'axios';
 import {createStore} from 'vuex';
+import axios from 'axios';
 // import axios from 'axios';
 
 export const store = createStore({
     // Свойство state: {} содержит два массива: products и StoreCart.
     // Массив продуктов содержит сведения о каждом продукте.
-    // Массив StoreCart пуст, потому что именно здесь будет храниться
+    // Массив cart пуст, потому что именно здесь будет храниться
     // каждый товар, который пользователь добавляет в корзину.
     state: {
         products: [],
@@ -949,10 +950,8 @@ export const store = createStore({
         //         "price": 39
         //     }
         // ],
-        // cart: [],
-        cart: JSON.parse(localStorage.getItem("cart")),
-        quantity: 0,
-        total: 0,
+        cart: JSON.parse(localStorage.getItem("cart")) || [],
+        // cartLocal: JSON.parse(localStorage.getItem("cartLocal")),
     },
     // Мутации - синхронны
     mutations: {
@@ -966,16 +965,19 @@ export const store = createStore({
             product.isAdded = true;
             console.log(state.cart);
             localStorage.setItem('cart', JSON.stringify(state.cart));
+            // localStorage.setItem('cartLocal', JSON.stringify(state.cart));
         },
 
         CLEAR_CART: (state) => {
             state.cart = [];
             localStorage.setItem('cart', JSON.stringify(state.cart));
+            // localStorage.setItem('cartLocal', JSON.stringify(state.cart));
         },
 
         REMOVE_FROM_CART: (state, index) => {
             state.cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(state.cart));
+            // localStorage.setItem('cartLocal', JSON.stringify(state.cart));
         },
         INCREMENT: (state, index) => {
             state.cart[index].quantity++;
@@ -988,8 +990,8 @@ export const store = createStore({
     },
     // Акшены - асинхронны
     actions: {
-        /*GET_PRODUCTS_FROM_API({commit}) {
-            return axios('https://9b25d366b1aceedb.mokky.dev/products', {
+        GET_PRODUCTS_FROM_API({commit}) {
+            return axios('https://1102df40d9a2f61e.mokky.dev/products', {
                 method: "GET"
             })
                 .then((products) => {
@@ -1005,7 +1007,7 @@ export const store = createStore({
                     console.log(error);
                     return error;
                 });
-        },*/
+        },
         /*async GET_PRODUCTS_FROM_API({commit}) {
             try {
                 await axios.get('https://9b25d366b1aceedb.mokky.dev/products')
@@ -1045,17 +1047,9 @@ export const store = createStore({
         CART(state) {
             return state.cart;
         },
-        quantity(state) {
-            return state.quantity;
-        },
-        totalSum(state) {
-            return state.total;
-        },
-        cartTotalCost: (state, getters) => {
-            return getters.PRODUCTS.reduce((total, product) => {
-                return total + product.price * product.quantity;
-            }, 0);
-        }
+        /*CART_LOCAL(state) {
+            return state.cartLocal;
+        },  */
     }
 });
 

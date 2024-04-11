@@ -25,6 +25,7 @@
         v-for="(item, index) in cart"
         :key="item.id"
         :id="item.id"
+        :item="item"
         :quantity="item.quantity"
         :title="item.title"
         :price="item.price"
@@ -66,42 +67,40 @@
 <script setup>
 import CartItem from '@/components/CartItem.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
-import CartEmpty from '@/components/CartEmpty.vue'
+import CartEmpty from '@/components/CartEmpty.vue';
 import {useStore} from 'vuex';
 import {computed, ref} from 'vue';
 import axios from 'axios';
 import AppFigure from '@/components/AppFigure.vue';
 
-    const store = useStore();
+const store = useStore();
 
-    const cart = computed(function () {
-      return store.state.cart;
+const cart = computed(() => store.state.cart);
+
+const cartTotalCost = computed(function () {
+  let result = [];
+  if (cart.value.length) {
+    for (let item of cart.value) {
+      result.push(item.price * item.quantity);
+    }
+    result = result.reduce(function (sum, el) {
+      return sum + el;
     });
+    return result;
+  } else {
+    return 0;
+  }
+});
 
-    const cartTotalCost = computed(function () {
-      let result = [];
-      if (cart.value.length) {
-        for (let item of cart.value) {
-          result.push(item.price * item.quantity);
-        }
-        result = result.reduce(function (sum, el) {
-          return sum + el;
-        });
-        return result;
-      } else {
-        return 0;
-      }
-    });
-
-    const increment = (index) => {
-      store.commit('INCREMENT', index);
-    };
-    const decrement = (index) => {
-      store.commit('DECREMENT', index);
-    };
-    const deleteFromCart = (index) => {
-      store.commit('REMOVE_FROM_CART', index);
-    };
+const increment = (index) => {
+  store.commit('INCREMENT', index);
+};
+const decrement = (index) => {
+  store.commit('DECREMENT', index);
+};
+const deleteFromCart = (index) => {
+  store.commit('REMOVE_FROM_CART', index);
+};
 
 // Текущая дата без времени
 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
@@ -127,7 +126,7 @@ const createOrder = async () => {
         },
     );
 // Очищает Корзину после оформления заказа
-      store.commit('CLEAR_CART');
+    store.commit('CLEAR_CART');
 
 // Получаем номер выполненного заказа в виде id
     orderDone.value = data.id;

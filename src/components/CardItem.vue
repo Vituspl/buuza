@@ -55,6 +55,8 @@ function addToCart() {
 
 .price-added {
   background: orange;
+  width: 100%;
+  height: 50px;
   color: blue;
   font-size: 18px;
   align-items: center;

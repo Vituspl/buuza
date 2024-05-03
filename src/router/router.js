@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import CardList from '../components/CardList.vue'
 import Cart from '@/views/Cart.vue'
 import AppHome from '@/views/AppHome.vue';
+import Admin from '@/views/Admin.vue';
 // так подключается роутеры на vue 3
 const routes = [
     {
@@ -14,6 +15,11 @@ const routes = [
         path:'/cart',
         name:'cart',
         component: Cart,
+    },
+    {
+        path:'/admin',
+        name:'admin',
+        component: Admin,
     }
 ];
 const router = createRouter({

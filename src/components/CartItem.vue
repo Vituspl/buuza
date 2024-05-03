@@ -18,7 +18,8 @@
         flex
         justify-between
         flex-nowrap
-        items-center"
+        items-center
+        "
     >
       <div class="v-cart-item__quantity">
         <b>Количество:</b>

@@ -1,4 +1,7 @@
 <template>
+  <!--  v-if="activeCategory"  -->
+<!--  :class="{'white': !clicked, 'blue': clicked}"  -->
+<!--  clicked = !clicked  -->
   <aside>
     <div class="items">
       <button
@@ -10,6 +13,16 @@
       >
         <span>{{ value.name }}</span>
       </button>
+      <!--      <button
+                v-else
+                v-for="value in categoryes"
+                :key="value.category"
+                :src="value.src"
+                class="btn item"
+                @click="sendCategory(value.name)"
+            >
+              <span>{{ value.name }}</span>
+            </button>-->
     </div>
   </aside>
 
@@ -19,6 +32,7 @@
           v-for="value in categoryes"
           :key="value.category"
           :src="value.src"
+
           class="btn item"
           @click="sendCategory(value.name)"
       >
@@ -31,12 +45,21 @@
 
 <script setup>
 
+import {inject, ref} from 'vue';
+
 defineProps({
   category: String,
   activeCategory: String,
 });
 
 const emit = defineEmits(['setCategory']);
+const activeCategory = inject('cartActions');
+
+/*const clicked = ref(false);
+
+const onClick = () => {
+  clicked.value = !clicked;
+};*/
 
 function sendCategory(category) {
   emit('setCategory', category);
@@ -78,6 +101,20 @@ p {
   font-size: 14px;
   white-space: pre-wrap;
   margin: 0 auto 5px;
+}
+
+.white {
+  background-color: white;
+  width: 200px;
+  height: 200px;
+
+}
+
+.blue {
+  width: 200px;
+  height: 200px;
+  background-color: blue;
+
 }
 </style>
 

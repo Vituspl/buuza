@@ -11,6 +11,7 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="scss">
+/*//Применим стили из global.scss
+@import "./styles/global.scss";*/
 </style>

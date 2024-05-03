@@ -2,19 +2,19 @@
   <div class="flex items-center gap-5 mb-2 mt-2 ml-4">
 
     <router-link to='/'>
-    <div class="flex items-center cursor-pointer gap-5 mb-4 mt-4 ml-2">
+    <div class="flex items-center cursor-pointer gap-5 mb-2 mt-2 ml-2">
       <img
-          class="cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
+          class="stroke-red-800 cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
           src="/arrow-left.svg"
           alt="arrow"/>
 
-      <h2 class="text-2xl font-bold">Корзина</h2>
+      <h2 class="text-2xl text-blue-700 font-bold">Корзина</h2>
     </div>
     </router-link>
 
     <a @click="clearDrawer">
       <img
-          class="cursor-pointer mb-4 mt-4 ml-20"
+          class="cursor-pointer mb-2 mt-2 ml-20"
           src="/clear-cart-50.svg"
           width="30px"
           height="30px"

@@ -23,7 +23,6 @@ defineProps({
 
 const store = useStore();
 const cart = computed(() => store.getters.CART);
-// const cart = computed(() => store.state.cartLocal);
 </script>
 
 <style scoped>

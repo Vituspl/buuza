@@ -32,7 +32,7 @@ import {useStore} from 'vuex';
 // import axios from 'axios';
 
 const store = useStore();
-// Получаю products из store
+//Получаю products из store
 const products = computed(() => store.getters.PRODUCTS);
 
 // Получаю products через get запрос на сервер.

@@ -15,7 +15,8 @@
     <CartEmpty
         v-if="orderDone"
         title="Заказ оформлен"
-        :description="`Ваш заказ №${orderDone} от ${date} скоро будет передан курьерской доставке`"
+        :description="`Ваш заказ: №${orderDone} от ${date} принят, мы Вам перезвоним в течении 15 минут`"
+        description="`мы Вам перезвоним в течении 15 минут`"
         image-url="/order-success-icon.png"
     />
   </div>
@@ -36,6 +37,31 @@
         @decrement="decrement(index)"
     />
 
+    <div>
+      <div class="flex gap-16 mb-8 mt-8">
+        <h2>Тип Заказа:</h2>
+        <RadioButton
+            label="Доставка курьером"
+        />
+        <RadioButton
+            label="Самовывоз"
+        />
+        <RadioButton
+            label="Заказ на столик кафе"
+        />
+      </div>
+
+      <div class="flex gap-24">
+        <h2 class="mr-10">Вариант оплаты:</h2>
+        <RadioButton
+            label="Наличные"
+        />
+        <RadioButton
+            label="Терминал"
+        />
+      </div>
+    </div>
+
     <div class="flex-1 flex-col gap-4 my-7">
       <div class="flex gap-2 text-xl text-blue-700">
         <b>Стоимость заказа:</b>
@@ -43,22 +69,31 @@
         <b>{{ cartTotalCost }} &#8381;</b>
       </div>
 
+      <my-modal v-model:show="modalVisible">
+        <user-form
+            @create="createUser"
+            @order="createOrder"
+        />
+      </my-modal>
+
+      <!--      :disabled="buttonDisabled"-->
       <button
-          :disabled="buttonDisabled"
-          @click="createOrder"
+          @click="showModal"
           class="mt-4
           transition
           bg-lime-500
           w-full
           rounded-xl
           py-3
-          text-white
+          font-bold
+          text-xl
+          text-blue-700
           hover:bg-lime-600
           active:bg-lime-700
           disabled:bg-slate-300
           cursor-pointer"
       >
-        Оформить заказ
+        Создать заказ
       </button>
     </div>
   </div>
@@ -68,14 +103,20 @@
 import CartItem from '@/components/CartItem.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
 import CartEmpty from '@/components/CartEmpty.vue';
+import UserForm from '@/components/UserForm.vue';
+import MyModal from '@/components/UI/MyModal.vue';
+import AppFigure from '@/components/AppFigure.vue';
+import RadioButton from '@/components/UI/RadioButton.vue';
+
 import {useStore} from 'vuex';
 import {computed, ref} from 'vue';
 import axios from 'axios';
-import AppFigure from '@/components/AppFigure.vue';
 
 const store = useStore();
-
-const cart = computed(() => store.state.cart);
+const cart = computed(() => store.getters.CART);
+const user = computed(() => store.getters.USER);
+const users = computed(() => store.getters.USERS);
+// const user = ref({});
 
 const cartTotalCost = computed(function () {
   let result = [];
@@ -92,6 +133,11 @@ const cartTotalCost = computed(function () {
   }
 });
 
+const modalVisible = ref(false);
+const showModal = () => {
+  modalVisible.value = true;
+};
+
 const increment = (index) => {
   store.commit('INCREMENT', index);
 };
@@ -105,38 +151,56 @@ const deleteFromCart = (index) => {
 // Текущая дата без времени
 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
 
-const isCreating = ref(false);
+// const isCreating = ref(false);
 const orderDone = ref(null);
 
 // Определяем пустую Корзину
-const cartIsEmpty = computed(() => cart.value.length === 0);
+// const cartIsEmpty = computed(() => cart.value.length === 0);
 // Деактивируем кнопку "Оформить заказ"
-const buttonDisabled = computed(() =>
-    isCreating.value || cartIsEmpty.value);
+/*const buttonDisabled = computed(() =>
+    // isCreating.value || cartIsEmpty.value
+    cartIsEmpty.value
+);*/
+
+// Создаем данные Заказчика
+const createUser = (user) => {
+  // user.value = user;
+  store.dispatch('ADD_USER', user);
+};
+// console.log(users.value);
+console.log(user.value);
+
+const createOrder = () => {
+  store.dispatch('CREATE_ORDER', cartTotalCost.value, orderDone.value, {date});
+};
 
 // Функция передает POST запрос на сервер, при оформлении заказа, с массивом cart и ключом items
-const createOrder = async () => {
+/*const createOrder = async () => {
   try {
-    isCreating.value = true;
+    // isCreating.value = true;
 
     const {data} = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
-          items: cart.value,
-          descriptionOrder: `Дата заказа ${date}`,
+          orderItems: cart.value,
+          user: user.value,
+          descriptionOrder: `${date}`,
           totalPrice: `Общая стоимость заказа  ${cartTotalCost.value} рублей`,
         },
     );
+
 // Очищает Корзину после оформления заказа
-    store.commit('CLEAR_CART');
+    await store.dispatch('CLEAR_CART');
 
 // Получаем номер выполненного заказа в виде id
     orderDone.value = data.id;
     console.log(orderDone.value);
   } catch (err) {
     console.log(err);
-  } finally {
+  }
+
+  finally {
     isCreating.value = false;
   }
-};
+};*/
 </script>
 
 <style scoped>

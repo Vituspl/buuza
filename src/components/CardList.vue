@@ -45,8 +45,8 @@ const {activeCategory} = inject('cartActions');
 const store = useStore();
 
 const addToCart = (product) => {
-  store.commit('SET_CART', product)
-  // store.dispatch('ADD_TO_CART', product);
+  // store.commit('SET_CART', product)
+  store.dispatch('ADD_TO_CART', product);
 };
 </script>
 

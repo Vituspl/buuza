@@ -1,10 +1,10 @@
-import './assets/main.css';
-import './assets/styles/styles.scss';
+import './assets/styles/main.css';
 import './assets/styles/global.scss';
+// import './assets/styles/styles.scss';
 
 import {createApp} from 'vue';
 import App from './App.vue';
-// import components from '@/components/UI';
+import VueMask from '@devindex/vue-mask';
 
 // импорт новых js файлов
 import store from './vuex/store'
@@ -12,9 +12,7 @@ import router from './router/router'
 // рендерим наш компонент сюда
 const app = createApp(App);
 
-/*components.forEach(component=>{
-    app.component(component.name, component)
-})*/
+app.use(VueMask);
 
 app.use(router);
 app.use(store);

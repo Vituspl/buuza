@@ -1,30 +1,18 @@
-<template>
-  <div>
-    <!-- бандим класс btn-new - основной, `btn_${color}` - модификатор класса по цвету -->
-    <button
-        :class="['btn-new', `btn-new_${color}`, {'btn-new_outlined': outlined}]"
-        :disabled="disabled"
-        @click="clickOnButton"
-    >
-      {{ label }}
-    </button>
-  </div>
-</template>
-
 <script setup>
-// Прописываем свойства(пропсы) для универсальной кнопки
-defineProps({
-  //Динамическое наименование кнопки
+const props = defineProps({
   label: {
     type: String,
     default: 'Button'
   },
-  // Динамические стили (цвет) кнопки
   color: {
     type: String,
     default: 'primary'
   },
-  disabled:{
+  disabled: {
+    type: Boolean,
+    required: false
+  },
+  rounded: {
     type: Boolean,
     required: false
   },
@@ -32,23 +20,42 @@ defineProps({
     type: Boolean,
     required: false
   },
-});
+  icon: {
+    type: String,
+    required: false
+  },
+  size: {
+    type: String,
+    default: 'normal'
+  }
+})
 
-const emit = defineEmits(['done'])
+const emit = defineEmits(['click'])
 
 const clickOnButton = () => {
-  emit('done')
+  emit('click')
 }
 </script>
 
+<template>
+  <button
+    :class="['btn', `btn_${color}`, {'btn_rounded': rounded}, {'btn_outlined': outlined}, {'btn_icon': icon}, {'btn_large': size === 'large'}]"
+    :disabled="disabled"
+    @click="clickOnButton">
+      <span v-if="icon">
+        <font-awesome-icon :icon="`fa-regular fa-${icon}`" />
+      </span>
+      <span v-else>{{label}}</span>
+    </button>
+</template>
+
 <style lang="scss" scoped>
-//Цвета кнопок в файле global.scss
-.btn-new {
-  //margin-right: 10px;
-  //margin-bottom: 10px;
+.btn {
+  margin-right: 10px;
+  margin-bottom: 10px;
   padding: 0 20px;
   height: 40px;
-  color: #ffffff;
+  color: #fff;
   border-radius: 7px;
   border: none;
   cursor: pointer;
@@ -82,13 +89,6 @@ const clickOnButton = () => {
       background: var(--info-hover);
     }
   }
-  &_gray-bg{
-    background: var(--gray-bg);
-    border: 1px solid var(--gray-bg);
-    &:enabled:hover {
-      background: var(--warning);
-    }
-  }
   &_warning {
     background: var(--warning);
     border: 1px solid var(--warning);
@@ -99,7 +99,6 @@ const clickOnButton = () => {
   &_danger {
     background: var(--danger);
     border: 1px solid var(--danger);
-    //Цвет фона включится при наведении
     &:enabled:hover {
       background: var(--danger-hover);
     }
@@ -108,9 +107,9 @@ const clickOnButton = () => {
     opacity: .6;
     cursor: default;
   }
- /* &_rounded {
+  &_rounded {
     border-radius: 15px;
-  }*/
+  }
   &_outlined {
     background: transparent;
     color: #000;

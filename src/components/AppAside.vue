@@ -4,6 +4,17 @@
 <!--  clicked = !clicked  -->
   <aside>
     <div class="items">
+<!--      <new-button
+          class="text-white text-2xl text-left bg-gray-600/75 rounded-lg h-12 font-semibold w-60 mb-2.5"
+          v-for="value in categoryes"
+          :key="value.category"
+          :src="value.src"
+          :label="value.name"
+          @click="sendCategory(value.name)"
+      >
+        <span>{{ label }}</span>
+      </new-button>-->
+
       <button
           v-for="value in categoryes"
           :key="value.category"
@@ -46,14 +57,16 @@
 <script setup>
 
 import {inject, ref} from 'vue';
+import NewButton from '@/components/UI/NewButton.vue';
 
 defineProps({
   category: String,
   activeCategory: String,
+  label: String,
 });
 
 const emit = defineEmits(['setCategory']);
-const activeCategory = inject('cartActions');
+// const activeCategory = inject('cartActions');
 
 /*const clicked = ref(false);
 
@@ -103,18 +116,12 @@ p {
   margin: 0 auto 5px;
 }
 
-.white {
-  background-color: white;
-  width: 200px;
-  height: 200px;
-
+.orange {
+  background-color: orange;
 }
 
-.blue {
-  width: 200px;
-  height: 200px;
+.category {
   background-color: blue;
-
 }
 </style>
 

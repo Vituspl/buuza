@@ -1,85 +1,61 @@
 <template>
-  <AppFigure/>
-  <DrawerHead/>
+  <div>
+    <AppFigure/>
+    <DrawerHead/>
 
-  <!--  Показываем компонент <InfoBlock> по условию  -->
-  <div v-if="!cartTotalCost || orderDone" class="flex h-full items-center">
-    <!--  Показать при условии  -->
-    <CartEmpty
-        v-if="!cartTotalCost && !orderDone"
-        title="Ваша Корзина пустая"
-        description="Добавьте хотя бы одно блюдо, чтобы сделать заказ"
-        image-url="/package-icon.png"
-    />
-    <!--  Показать при условии  -->
-    <CartEmpty
-        v-if="orderDone"
-        title="Заказ оформлен"
-        :description="`Ваш заказ: №${orderDone} от ${date} принят, мы Вам перезвоним в течении 15 минут`"
-        description="`мы Вам перезвоним в течении 15 минут`"
-        image-url="/order-success-icon.png"
-    />
-  </div>
-
-  <div v-else>
-    <cart-item
-        v-for="(item, index) in cart"
-        :key="item.id"
-        :id="item.id"
-        :item="item"
-        :quantity="item.quantity"
-        :title="item.title"
-        :price="item.price"
-        :image-url="item.imageUrl"
-        :ingredients="item.ingredients"
-        @deleteFromCart="deleteFromCart(index)"
-        @increment="increment(index)"
-        @decrement="decrement(index)"
-    />
-
-    <div>
-      <div class="flex gap-16 mb-8 mt-8">
-        <h2>Тип Заказа:</h2>
-        <RadioButton
-            label="Доставка курьером"
+    <!--  Показываем компонент <InfoBlock> по условию  -->
+    <div v-if="!cartTotalCost || orderDone"
+         class="flex h-full items-center">
+      <!--  Показать при условии  -->
+      <CartEmpty
+          v-if="!cartTotalCost && !orderDone"
+          title="Ваша Корзина пустая"
+          description="Добавьте хотя бы одно блюдо, чтобы сделать заказ"
+          image-url="/package-icon.png"
+      />
+      <!--  Показать при условии  -->
+        <CartEmpty
+            v-if="orderDone"
+            v-for="order in orders"
+            :key="order.id"
+            title="Заказ оформлен"
+            :description="`Ваш заказ: №${order.id} от ${order.descriptionOrder} принят, мы Вам перезвоним в течении 15 минут`"
+            image-url="/order-success-icon.png"
         />
-        <RadioButton
-            label="Самовывоз"
-        />
-        <RadioButton
-            label="Заказ на столик кафе"
-        />
-      </div>
-
-      <div class="flex gap-24">
-        <h2 class="mr-10">Вариант оплаты:</h2>
-        <RadioButton
-            label="Наличные"
-        />
-        <RadioButton
-            label="Терминал"
-        />
-      </div>
     </div>
 
-    <div class="flex-1 flex-col gap-4 my-7">
-      <div class="flex gap-2 text-xl text-blue-700">
-        <b>Стоимость заказа:</b>
-        <div class="flex-1 border-b-blue-500 border-b-2 border-dashed color"></div>
-        <b>{{ cartTotalCost }} &#8381;</b>
-      </div>
+    <div v-else>
+      <cart-item
+          v-for="(item, index) in cart"
+          :key="item.id"
+          :id="item.id"
+          :item="item"
+          :quantity="item.quantity"
+          :title="item.title"
+          :price="item.price"
+          :image-url="item.imageUrl"
+          :ingredients="item.ingredients"
+          @deleteFromCart="deleteFromCart(index)"
+          @increment="increment(index)"
+          @decrement="decrement(index)"
+      />
 
-      <my-modal v-model:show="modalVisible">
-        <user-form
-            @create="createUser"
-            @order="createOrder"
-        />
-      </my-modal>
+      <div class="flex-1 flex-col gap-4 my-7">
+        <div class="flex gap-2 text-xl text-blue-700">
+          <b>Стоимость заказа:</b>
+          <div class="flex-1 border-b-blue-500 border-b-2 border-dashed color"></div>
+          <b>{{ cartTotalCost }} &#8381;</b>
+        </div>
 
-      <!--      :disabled="buttonDisabled"-->
-      <button
-          @click="showModal"
-          class="mt-4
+        <new-modal v-model:show="modalVisible">
+          <new-user-form
+              @orderDone="isCreating"
+          />
+        </new-modal>
+
+        <button
+            @click="showModal"
+            class="mt-4
           transition
           bg-lime-500
           w-full
@@ -92,9 +68,10 @@
           active:bg-lime-700
           disabled:bg-slate-300
           cursor-pointer"
-      >
-        Создать заказ
-      </button>
+        >
+          Создать заказ
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -103,20 +80,27 @@
 import CartItem from '@/components/CartItem.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
 import CartEmpty from '@/components/CartEmpty.vue';
-import UserForm from '@/components/UserForm.vue';
-import MyModal from '@/components/UI/MyModal.vue';
+
+import NewModal from '@/components/UI/NewModal.vue';
+import NewUserForm from '@/components/NewUserForm.vue';
 import AppFigure from '@/components/AppFigure.vue';
-import RadioButton from '@/components/UI/RadioButton.vue';
 
 import {useStore} from 'vuex';
 import {computed, ref} from 'vue';
-import axios from 'axios';
+
+/*defineProps({
+  delivery: String,
+  payment: String,
+  user: Array,
+  sendUser: Function,
+  sendOrder: Function,
+});*/
 
 const store = useStore();
 const cart = computed(() => store.getters.CART);
 const user = computed(() => store.getters.USER);
 const users = computed(() => store.getters.USERS);
-// const user = ref({});
+const orders = computed(() => store.getters.ORDERS);
 
 const cartTotalCost = computed(function () {
   let result = [];
@@ -139,20 +123,26 @@ const showModal = () => {
 };
 
 const increment = (index) => {
-  store.commit('INCREMENT', index);
+  store.dispatch('INCREMENT_CART_ITEM', index);
 };
 const decrement = (index) => {
-  store.commit('DECREMENT', index);
+  store.dispatch('DECREMENT_CART_ITEM', index);
 };
 const deleteFromCart = (index) => {
-  store.commit('REMOVE_FROM_CART', index);
+  store.dispatch('DELETE_FROM_CART', index);
 };
 
 // Текущая дата без времени
-let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
+// let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
 
-// const isCreating = ref(false);
-const orderDone = ref(null);
+const orderDone = ref(false);
+const isCreating = () => {
+  orderDone.value = true;
+};
+// const orderId = ref(null);
+// const activeDelivery = ref('');
+// const activePayment = ref('');
+
 
 // Определяем пустую Корзину
 // const cartIsEmpty = computed(() => cart.value.length === 0);
@@ -163,16 +153,18 @@ const orderDone = ref(null);
 );*/
 
 // Создаем данные Заказчика
-const createUser = (user) => {
+/*const createUser = (user) => {
   // user.value = user;
   store.dispatch('ADD_USER', user);
-};
+};*/
 // console.log(users.value);
-console.log(user.value);
+// console.log(user.value);
 
-const createOrder = () => {
-  store.dispatch('CREATE_ORDER', cartTotalCost.value, orderDone.value, {date});
-};
+/*const createOrder = (delivery, payment) => {
+  orderDone.value = true;
+  // store.dispatch('CREATE_ORDER', cartTotalCost.value, orderDone.value, {date});
+  store.dispatch('CREATE_ORDER', cartTotalCost.value, delivery, payment)
+};*/
 
 // Функция передает POST запрос на сервер, при оформлении заказа, с массивом cart и ключом items
 /*const createOrder = async () => {

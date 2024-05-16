@@ -1,17 +1,8 @@
-// import Vue from 'vue';
-// import Vuex from 'vuex';
-// import axios from 'axios';
 import {createStore} from 'vuex';
 import axios from 'axios';
-import {ref} from 'vue';
-// import * as orders from 'autoprefixer';
-// import axios from 'axios';
 
 export const store = createStore({
-    // Свойство state: {} содержит два массива: products и StoreCart.
-    // Массив продуктов содержит сведения о каждом продукте.
-    // Массив cart пуст, потому что именно здесь будет храниться
-    // каждый товар, который пользователь добавляет в корзину.
+
     state: {
         products: [],
         cart: JSON.parse(localStorage.getItem("cart")) || [],
@@ -24,7 +15,7 @@ export const store = createStore({
         SET_PRODUCTS_TO_STATE: (state, products) => {
             state.products = products;
         },
-        CREATE_ORDER: (state,orders) => {
+        CREATE_ORDER: (state, orders) => {
             state.orders = orders;
             localStorage.setItem('orders', JSON.stringify(state.orders));
         },
@@ -52,15 +43,13 @@ export const store = createStore({
             localStorage.setItem('users', JSON.stringify(state.users));
             state.user = [];
             localStorage.setItem('user', JSON.stringify(state.user));
+            state.order = [];
+            localStorage.setItem('order', JSON.stringify(state.order));
         },
         REMOVE_ORDER: (state, index) => {
             state.orders.splice(index, 1);
             localStorage.setItem('orders', JSON.stringify(state.orders));
         },
-        /*DELETE_ORDER: (state, index) => {
-            state.orders.splice(index, 1);
-            localStorage.setItem('orders', JSON.stringify(state.orders));
-        },*/
 
         REMOVE_FROM_CART: (state, index) => {
             state.cart.splice(index, 1);
@@ -85,8 +74,6 @@ export const store = createStore({
             localStorage.setItem('user', JSON.stringify(state.user));
             state.users.splice(index, 1);
             localStorage.setItem('users', JSON.stringify(state.users));
-            /*state.orders.splice(index, 1);
-            localStorage.setItem('orders', JSON.stringify(state.orders));*/
         }
     },
     // Акшены - асинхронны
@@ -110,7 +97,7 @@ export const store = createStore({
                 });
         },
 
-        async CREATE_ORDER({state, commit}, cartTotalCost, orderDone) {
+        async CREATE_ORDER({state, commit}, {cartTotalCost, delivery, payment}) {
             try {
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
 
@@ -118,16 +105,14 @@ export const store = createStore({
                         orderItems: state.cart,
                         user: state.user,
                         descriptionOrder: date,
-                        totalPrice: `Общая стоимость заказа  ${cartTotalCost} рублей`,
+                        totalPrice: cartTotalCost.value,
+                        delivery: delivery.value,
+                        payment: payment.value,
                     },
                 );
                 commit('CREATE_ORDER', {data});
 // Очищает Корзину после оформления заказа
                 commit('CLEAR_CART');
-
-// Получаем номер выполненного заказа в виде id
-                orderDone.value = data.id;
-                console.log(orderDone.value);
             } catch (err) {
                 console.log(err);
             }
@@ -145,20 +130,15 @@ export const store = createStore({
         },
 
         // Пока что разбираюсь????
-        /*async DELETE_ORDER({commit, state}, {index}) {
+        async DELETE_ORDER({commit, state}, id, index) {
             try {
-                const response = await axios.delete('https://1102df40d9a2f61e.mokky.dev/orders' + index)
-                    .then(response => {
-                        this.result.splice(index, 1);
-                        console.log(this.result);
-                    });
-
-                commit('REMOVE_ORDER', response.data);
+                await axios.delete(`https://1102df40d9a2f61e.mokky.dev/orders/${id}`);
+                commit('REMOVE_ORDER', index)
             } catch (error) {
                 console.log(error);
                 return error;
             }
-        },*/
+        },
 
         /*async GET_PRODUCTS_FROM_API({commit}) {
             try {
@@ -222,7 +202,10 @@ export const store = createStore({
         },
         ORDERS(state) {
             return state.orders;
-        }
+        },
+        ORDER(state) {
+            return state.order;
+        },
     }
 });
 

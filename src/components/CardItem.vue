@@ -11,7 +11,7 @@
     <div>
       <button
           v-if="!props.product.isAdded"
-          class="btn price-add"
+          class="btn dish-add"
           @click.stop="addToCart()"
       >
         <b>В Корзину</b>
@@ -19,7 +19,7 @@
 
       <button
           v-else
-          class="btn price-added"
+          class="btn dish-added"
       >
         <b>Уже в Корзине</b>
       </button>
@@ -39,7 +39,7 @@ function addToCart() {
 </script>
 
 <style scoped>
-.price-add {
+.dish-add {
   display: flex;
   justify-content: center;
   background: lime;
@@ -53,7 +53,7 @@ function addToCart() {
   cursor: pointer;
 }
 
-.price-added {
+.dish-added {
   background: orange;
   width: 100%;
   height: 50px;

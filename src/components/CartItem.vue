@@ -4,6 +4,8 @@
       <img class="w-28 h-28" :src="imageUrl" :alt="title"/>
 
       <div class="flex flex-col flex-1">
+        <b class="pl-4">{{ id }}</b>
+
         <b class="pl-4">{{ title }}</b>
 
         <p class="pl-4">"{{ ingredients }}"</p>
@@ -34,7 +36,7 @@
         </span>
       </div>
 
-      <a @click="deleteFromCart">
+      <a @click="deleteFromCart(product); changeIsAdded(product)">
         <img
             class="opacity-100 color:red  hover:opacity-100 cursor-pointer transition"
             src="/close-full-red-48.svg"
@@ -45,38 +47,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'cart-item',
-  components: {},
-  props: {
-    item: {
-      type: Object,
-    },
-    id: Number,
-    imageUrl: String,
-    title: String,
-    ingredients: String,
-    price: Number,
-    quantity: Number,
+<script setup>
+
+defineProps({
+  product: {
+    type: Object,
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {
-    // Здесь мы эмитим события, а ловим их в к-те Cart.vue
-    decrementItem() {
-      this.$emit('decrement');
-    },
-    incrementItem() {
-      this.$emit('increment');
-    },
-    deleteFromCart() {
-      this.$emit('deleteFromCart');
-    }
-  }
+  id: String,
+  imageUrl: String,
+  title: String,
+  ingredients: String,
+  price: Number,
+  quantity: Number,
+});
+
+const emit = defineEmits(['decrement', 'increment', 'deleteFromCart', 'changeIsAdded']);
+
+const decrementItem = () => {
+  emit('decrement');
 };
+const incrementItem = () => {
+  emit('increment');
+};
+const deleteFromCart = (product) => {
+  emit('deleteFromCart', product);
+};
+const changeIsAdded = (product) => {
+  emit('changeIsAdded', product);
+}
+
 </script>
 
 <style lang="scss">

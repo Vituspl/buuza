@@ -4,20 +4,22 @@
     <div class="title-menu" v-else><b>Блюда категории {{ activeCategory }}</b></div>
 
     <div class="items">
-      <CardItem
-          v-for="product in products"
-          :product="product"
-          :key="product.id"
-          :id="product.id"
-          :product-id="product.id"
-          :title="product.title"
-          :image-url="product.imageUrl"
-          :category="product.category"
-          :price="product.price"
-          :quantity="product.quantity"
-          :is-added="product.isAdded"
-          @add-to-cart="addToCart(product)"
-      />
+      <keep-alive>
+        <CardItem
+            v-for="product in products"
+            :product="product"
+            :key="product.id"
+            :id="product.id"
+            :product-id="product.id"
+            :title="product.title"
+            :image-url="product.imageUrl"
+            :category="product.category"
+            :price="product.price"
+            :quantity="product.quantity"
+            :is-added="product.isAdded"
+            @add-to-cart="addToCart(product)"
+        />
+      </keep-alive>
     </div>
   </main>
 </template>
@@ -31,12 +33,12 @@ defineProps(
     {
       products: Array,
       product: Object,
-      id: Number,
-      quantity: Number,
-      category: String,
-      // activeCategory: String,
-      isAdded: Boolean,
-      ingredients: String,
+      // id: Number,
+      // quantity: Number,
+      // category: String,
+      // // activeCategory: String,
+      // isAdded: Boolean,
+      // ingredients: String,
     }
 );
 
@@ -45,7 +47,6 @@ const {activeCategory} = inject('cartActions');
 const store = useStore();
 
 const addToCart = (product) => {
-  // store.commit('SET_CART', product)
   store.dispatch('ADD_TO_CART', product);
 };
 </script>

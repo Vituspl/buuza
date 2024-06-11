@@ -10,12 +10,9 @@ import Admin from '@/views/Admin.vue';
 defineProps({
   title: {
     type: String,
-    default: 'Заказ в кафе',
+    default: 'Заказы в кафе',
   },
 });
 </script>
 
-<style scoped>
-
-</style>
 

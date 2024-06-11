@@ -3,39 +3,58 @@
     <AppFigure/>
     <DrawerHead/>
 
-    <!--  Показываем компонент <InfoBlock> по условию  -->
-    <div v-if="!cartTotalCost || orderDone"
-         class="flex h-full items-center">
-      <!--  Показать при условии  -->
+    <!--  Показать при условии  -->
+    <div class="block h-full items-center">
       <CartEmpty
           v-if="!cartTotalCost && !orderDone"
           title="Ваша Корзина пустая"
           description="Добавьте хотя бы одно блюдо, чтобы сделать заказ"
           image-url="/package-icon.png"
       />
+    </div>
+    <!--  Показываем компонент <InfoBlock> по условию  -->
+    <div v-if="!cartTotalCost || orderDone"
+         class="block h-full items-center"
+         v-for="item in order"
+         :key="item.id"
+         :order="order"
+    >
       <!--  Показать при условии  -->
-        <CartEmpty
-            v-if="orderDone"
-            v-for="order in orders"
-            :key="order.id"
-            title="Заказ оформлен"
-            :description="`Ваш заказ: №${order.id} от ${order.descriptionOrder} принят, мы Вам перезвоним в течении 15 минут`"
-            image-url="/order-success-icon.png"
-        />
+      <CartEmpty
+          v-if="orderDone"
+          title="Заказ оформлен"
+          :description="`Ваш заказ: №${item.orderId} от ${item.dateOrder} принят в ${item.timeOrder}, мы Вам перезвоним в течении 15 минут`"
+          image-url="/order-success-icon.png"
+      />
+
+      <!--      v-for="order in orders"
+            :key="order.id"-->
+
+      <div class="mt-12 text-center">
+        <router-link to="/track">
+          <new-button
+              v-if="orderDone"
+              label="Отследить заказ"
+              @click="trackOrder(item.orderId)"
+          />
+        </router-link>
+      </div>
     </div>
 
     <div v-else>
       <cart-item
-          v-for="(item, index) in cart"
-          :key="item.id"
-          :id="item.id"
-          :item="item"
-          :quantity="item.quantity"
-          :title="item.title"
-          :price="item.price"
-          :image-url="item.imageUrl"
-          :ingredients="item.ingredients"
+          v-for="(product, index) in cart"
+          :key="product.id"
+          :id="product.id"
+          :product="product"
+          :quantity="product.quantity"
+          :title="product.title"
+          :price="product.price"
+          :image-url="product.imageUrl"
+          :ingredients="product.ingredients"
+          :is-added="product.isAdded"
           @deleteFromCart="deleteFromCart(index)"
+          @changeIsAdded="changeIsAdded(product)"
           @increment="increment(index)"
           @decrement="decrement(index)"
       />
@@ -78,35 +97,45 @@
 
 <script setup>
 import CartItem from '@/components/CartItem.vue';
+import AppFigure from '@/components/AppFigure.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
 import CartEmpty from '@/components/CartEmpty.vue';
 
 import NewModal from '@/components/UI/NewModal.vue';
 import NewUserForm from '@/components/NewUserForm.vue';
-import AppFigure from '@/components/AppFigure.vue';
+import NewButton from '@/components/UI/NewButton.vue';
 
 import {useStore} from 'vuex';
 import {computed, ref} from 'vue';
 
-/*defineProps({
-  delivery: String,
-  payment: String,
-  user: Array,
-  sendUser: Function,
-  sendOrder: Function,
-});*/
+defineProps({
+  product: {
+    type: Object,
+  },
+  id: String,
+  imageUrl: String,
+  title: String,
+  ingredients: String,
+  price: Number,
+  quantity: Number,
+});
+
+const emit = defineEmits(['trackOrder']);
 
 const store = useStore();
 const cart = computed(() => store.getters.CART);
 const user = computed(() => store.getters.USER);
 const users = computed(() => store.getters.USERS);
+const order = computed(() => store.getters.ORDER);
+// console.log(order);
 const orders = computed(() => store.getters.ORDERS);
+// console.log(orders);
 
 const cartTotalCost = computed(function () {
   let result = [];
   if (cart.value.length) {
-    for (let item of cart.value) {
-      result.push(item.price * item.quantity);
+    for (let product of cart.value) {
+      result.push(product.price * product.quantity);
     }
     result = result.reduce(function (sum, el) {
       return sum + el;
@@ -131,14 +160,27 @@ const decrement = (index) => {
 const deleteFromCart = (index) => {
   store.dispatch('DELETE_FROM_CART', index);
 };
-
-// Текущая дата без времени
-// let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
+const changeIsAdded = (product) => {
+  store.dispatch('CHANGE_IS_ADDED', product);
+};
 
 const orderDone = ref(false);
 const isCreating = () => {
   orderDone.value = true;
 };
+
+const trackOrder = (orderId) => {
+  emit('trackOrder', {orderId});
+};
+
+/*const order = computed(()=>{
+  for(let order in orders){
+    console.log(order);
+    console.log(order.id);
+    console.log(order.dateOrder);
+    console.log(order.timeOrder);
+  }
+})*/
 // const orderId = ref(null);
 // const activeDelivery = ref('');
 // const activePayment = ref('');

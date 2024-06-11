@@ -6,7 +6,8 @@
       <img
           class="stroke-red-800 cursor-pointer hover:opacity-100 transition hover:-translate-x-1"
           src="/arrow-left.svg"
-          alt="arrow"/>
+          alt="arrow"
+      />
 
       <h2 class="text-2xl text-blue-700 font-bold">Корзина</h2>
     </div>
@@ -31,7 +32,7 @@ const store = useStore()
 
 // Очищает корзину
 const clearDrawer = ()=>{
-  store.commit('CLEAR_CART');
+  store.dispatch('CLEAR_CART');
 }
 </script>
 

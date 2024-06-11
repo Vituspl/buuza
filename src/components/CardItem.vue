@@ -1,41 +1,52 @@
 <template>
   <div class="item">
     <div class="dish-img">
-      <img :src="props.product.imageUrl" alt="Dish"/>
+      <img :src="product.imageUrl" alt="Dish"/>
     </div>
 
-    <div class="subtitle">{{ props.product.title }}</div>
+    <div class="subtitle">{{ product.title }}</div>
 
-    <div class="weight">Стоимость <b class="text-blue-700"> {{ props.product.price }} &#8381;</b></div>
+    <div class="weight">Стоимость <b class="text-blue-700"> {{ product.price }} &#8381;</b></div>
 
     <div>
-      <button
-          v-if="!props.product.isAdded"
-          class="btn dish-add"
-          @click.stop="addToCart()"
-      >
-        <b>В Корзину</b>
-      </button>
+<!--  Попробовать: v-if="cart.includes(product)"    -->
+<!--   v-if="!product.isAdded"    -->
 
-      <button
-          v-else
-          class="btn dish-added"
-      >
-        <b>Уже в Корзине</b>
-      </button>
+        <button
+            v-if="!product.isAdded"
+            class="btn dish-add"
+            @click.stop="addToCart()"
+        >
+          <b>В Корзину</b>
+        </button>
+
+        <button
+            v-else
+            class="btn dish-added"
+        >
+          <b>Уже в Корзине</b>
+        </button>
     </div>
   </div>
 </template>
 
 <script setup>
 
-const props = defineProps(['product']);
+import {useStore} from 'vuex';
+import {computed} from 'vue';
+
+// const props = defineProps(['product']);
+defineProps(['product']);
 
 const emit = defineEmits(['addToCart']);
+
+const store = useStore();
+const cart = computed(() => store.getters.CART);
 
 function addToCart() {
   emit('addToCart');
 }
+
 </script>
 
 <style scoped>

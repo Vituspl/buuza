@@ -1,19 +1,6 @@
 <template>
-  <!--  v-if="activeCategory"  -->
-<!--  :class="{'white': !clicked, 'blue': clicked}"  -->
-<!--  clicked = !clicked  -->
   <aside>
     <div class="items">
-<!--      <new-button
-          class="text-white text-2xl text-left bg-gray-600/75 rounded-lg h-12 font-semibold w-60 mb-2.5"
-          v-for="value in categoryes"
-          :key="value.category"
-          :src="value.src"
-          :label="value.name"
-          @click="sendCategory(value.name)"
-      >
-        <span>{{ label }}</span>
-      </new-button>-->
 
       <button
           v-for="value in categoryes"
@@ -24,16 +11,7 @@
       >
         <span>{{ value.name }}</span>
       </button>
-      <!--      <button
-                v-else
-                v-for="value in categoryes"
-                :key="value.category"
-                :src="value.src"
-                class="btn item"
-                @click="sendCategory(value.name)"
-            >
-              <span>{{ value.name }}</span>
-            </button>-->
+
     </div>
   </aside>
 
@@ -55,10 +33,6 @@
 </template>
 
 <script setup>
-
-import {inject, ref} from 'vue';
-import NewButton from '@/components/UI/NewButton.vue';
-
 defineProps({
   category: String,
   activeCategory: String,
@@ -66,13 +40,6 @@ defineProps({
 });
 
 const emit = defineEmits(['setCategory']);
-// const activeCategory = inject('cartActions');
-
-/*const clicked = ref(false);
-
-const onClick = () => {
-  clicked.value = !clicked;
-};*/
 
 function sendCategory(category) {
   emit('setCategory', category);
@@ -86,13 +53,15 @@ const categoryes = [
   {name: 'Пельмени', src: "/images/icons/icons8-pelmeni-50.png"},
   {name: 'Сковороды', src: "/images/icons/icons8-skovoroda-50.png"},
   {name: 'На компанию', src: "/images/icons/icons8-assorti-50.png"},
-  {name: 'К Пиву', src: "/images/icons/camaronas.png"},
+  {name: 'К Пиву', src: "/images/icons/shrimp_2-50x56.png"},
+  // {name: 'К Пиву', src: "/images/icons/shrimp-50x50.png"},
   {name: 'Нагетсы', src: "/images/icons/icons8-chicken-64.png"},
   {name: 'Супы', src: "/images/icons/icons8-sup-64.png"},
   {name: 'Лапша', src: "/images/icons/icons8-wok-50.png"},
   {name: 'Салаты', src: "/images/icons/icons8-salat-50.png"},
   {name: 'Гарниры', src: "/images/icons/icons8-garnir-green-50.png"},
-  {name: 'Закуски', src: "/images/icons/camaronas.png"},
+  {name: 'Закуски', src: "/images/icons/shrimp_2-50x56.png"},
+  // {name: 'Закуски', src: "/images/icons/shrimp-50x50.png"},
   {name: 'Для детей', src: "/images/icons/icons8-potato-free-50.png"},
   {name: 'Десерты', src: "/images/icons/icons8-desert-50.png"},
   {name: 'Соусы', src: "/images/icons/icons8-sous-66.png"},

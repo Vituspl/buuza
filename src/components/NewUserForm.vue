@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-8">Оформление Заказа</h1>
+    <h1 class="text-center text-xl font-bold mb-8">Оформление Заказа</h1>
 
     <form @submit.prevent="submitForm">
       <div>
@@ -70,10 +70,16 @@
           v-mask-phone.us
           :error="v$.user.userPhone.$errors"
       />
+
+      <p class="text-sm text-blue-700">
+        "Пишите Адрес только, если заказываете доставку."
+        <br/>
+        "Если Вы в кафе, то укажите № столика"
+      </p>
       <new-input
-          label="* Обязательно к заполнению"
-          color="warning"
-          placeholder="Введите Ваш Адрес"
+          label=""
+          color="primary"
+          placeholder="Введите Ваш Адрес. Введите № столика."
           name="address"
           v-model:value.trim="v$.user.userAddress.$model"
           :error="v$.user.userAddress.$errors"
@@ -115,7 +121,7 @@ import NewInput from '@/components/UI/NewInput.vue';
 import NewButton from '@/components/UI/NewButton.vue';
 import RadioButton from '@/components/UI/RadioButton.vue';
 import useVuelidate from '@vuelidate/core';
-import {helpers, required, minLength, maxLength, numeric} from '@vuelidate/validators';
+import {helpers, required, requiredIf, minLength, maxLength, numeric} from '@vuelidate/validators';
 
 import {computed, reactive, ref} from 'vue';
 import {useStore} from 'vuex';
@@ -129,7 +135,7 @@ const emit = defineEmits(['orderDone']);
 const typeOrderGroup = reactive([
   {orderName: 'Доставка Курьером', id: 't1'},
   {orderName: 'Самовывоз', id: 't2'},
-  {orderName: 'Заказ в кафе', id: 't3'},
+  {orderName: 'Заказы в кафе', id: 't3'},
 ]);
 const typePaymentGroup = reactive([
   {paymentName: 'Наличные', id: 'p1'},
@@ -137,7 +143,7 @@ const typePaymentGroup = reactive([
 ]);
 
 const delivery = ref('');
-console.log(delivery);
+// console.log(delivery);
 const payment = ref('');
 // console.log(payment);
 
@@ -160,10 +166,10 @@ const rules = computed(() => ({
       required: helpers.withMessage(`Обязательно надо заполнить`, required),
       maxLength: helpers.withMessage('Надо ввести: не более 10 цифр', maxLength(14)),
       minLength: helpers.withMessage(`Надо ввести: не менее 10 цифр`, minLength(14)),
-      // numeric: helpers.withMessage('Вы можете ввести только цифры', numeric)
     },
     userAddress: {
-      required: helpers.withMessage(`Обязательно надо заполнить`, required),
+      requiredIfCourier: helpers.withMessage('Обязательно укажите адрес', requiredIf(delivery.value === 'Доставка Курьером')),
+      requiredIfHall: helpers.withMessage('Обязательно укажите № столика', requiredIf(delivery.value === 'Заказы в кафе')),
     },
     quantityCutlery: {
       numeric: helpers.withMessage('Введите только цифры', numeric)
@@ -199,6 +205,7 @@ const cartTotalCost = computed(function () {
 });
 
 const createUser = (user) => {
+  user.id = Date.now();
   store.dispatch('ADD_USER', user);
 };
 
@@ -208,9 +215,6 @@ const createOrder = (delivery, payment) => {
 
 const orderDone = () => {
   emit('orderDone');
-};
-const hideModal = () => {
-  emit('hideModal');
 };
 
 const submitForm = () => {
@@ -223,7 +227,7 @@ const submitForm = () => {
   createUser(user);
   createOrder(delivery, payment);
   orderDone();
-  // hideModal();
+
   return alert('Отправлено');
 };
 </script>

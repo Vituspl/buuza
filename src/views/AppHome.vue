@@ -34,12 +34,13 @@ import {useStore} from 'vuex';
 const store = useStore();
 //Получаю products из store
 const products = computed(() => store.getters.PRODUCTS);
+const cart = computed(() => store.getters.CART);
 
 // Получаю products через get запрос на сервер.
 // const products = ref([])
 
 // Получаю products из localStorage
-// const products = ref(JSON.parse(localStorage.getItem("products")));
+// const products = ref(v);
 
 const activeCategory = ref('Все Меню');
 
@@ -108,11 +109,18 @@ const fetchProducts = async () => {
   await store.dispatch('GET_PRODUCTS_FROM_API');
 };
 
+const localStorageProducts = () => {
+  return JSON.parse(localStorage.getItem(products));
+}
+
 onMounted(() => {
-  fetchProducts();
+  if(cart.value.length) {
+    return localStorageProducts();
+  }
+  return fetchProducts();
 });
 
-// Этот watch следит, что Все Меню меняется, то все items сохраняются в localStorage.
+// Этот watch следит, что Все Меню меняется, то все products сохраняются в localStorage.
 watch(products,
     () => {
       localStorage.setItem('products', JSON.stringify(products.value));

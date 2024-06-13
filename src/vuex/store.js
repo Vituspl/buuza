@@ -144,13 +144,11 @@ export const store = createStore({
     },
     // Акшены - асинхронны
     actions: {
-<<<<<<< HEAD
         GET_PRODUCTS_FROM_API({commit}) {
             return axios('https://1102df40d9a2f61e.mokky.dev/products', {
-=======
         /*GET_PRODUCTS_FROM_API({commit}) {
             return axios('https://9b25d366b1aceedb.mokky.dev/products', {
->>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653
+>>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653*/
                 method: "GET"
             })
                 .then((products) => {
@@ -173,7 +171,6 @@ export const store = createStore({
 
         async CREATE_ORDER({state, commit}, {cartTotalCost, delivery, payment}) {
             try {
-<<<<<<< HEAD
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
                 let orderId = Date.now().toString().slice(-4);
@@ -272,7 +269,7 @@ export const store = createStore({
                         order,
                         dateSentOrder: date,
                         timeSentOrder: time
-=======
+/*=======
                 await axios.get('https://9b25d366b1aceedb.mokky.dev/products')
                     .then((products) => {
                         // Добавляем количество товаров в объект
@@ -286,7 +283,7 @@ export const store = createStore({
             } catch(error) {
                         console.log(error);
                         return error;
->>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653
+>>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653*/
                     }
                 );
 

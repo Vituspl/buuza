@@ -146,9 +146,6 @@ export const store = createStore({
     actions: {
         GET_PRODUCTS_FROM_API({commit}) {
             return axios('https://1102df40d9a2f61e.mokky.dev/products', {
-        /*GET_PRODUCTS_FROM_API({commit}) {
-            return axios('https://9b25d366b1aceedb.mokky.dev/products', {
->>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653*/
                 method: "GET"
             })
                 .then((products) => {
@@ -157,8 +154,6 @@ export const store = createStore({
                         item.quantity = 1;
                         item.isAdded = false;
                     });
-                    // console.log(products);
-                    // console.log(state.cart);
 
                     commit('SET_PRODUCTS_TO_STATE', products.data);
                     return products;
@@ -174,7 +169,6 @@ export const store = createStore({
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
                 let orderId = Date.now().toString().slice(-4);
-
 
                 const response = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
                         orderItems: state.cart,
@@ -269,21 +263,6 @@ export const store = createStore({
                         order,
                         dateSentOrder: date,
                         timeSentOrder: time
-/*=======
-                await axios.get('https://9b25d366b1aceedb.mokky.dev/products')
-                    .then((products) => {
-                        // Добавляем количество товаров в объект
-                        products.data.map((item) => {
-                            item.quantity = 1;
-                            item.isAdded = false;
-                        });
-                        commit('SET_PRODUCTS_TO_STATE', products.data);
-                        return products;
-                    })
-            } catch(error) {
-                        console.log(error);
-                        return error;
->>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653*/
                     }
                 );
 

@@ -92,19 +92,6 @@ const filterMenu = computed(
     }
 );
 
-/*const fetchProducts = async () => {
-  try {
-    const {data} = await axios.get('https://9b25d366b1aceedb.mokky.dev/products');
-    products.value = data.map((obj) => ({
-      ...obj,
-      isAdded: false,
-      quantity: 1
-    }));
-  } catch (err) {
-    console.log(err);
-  }
-};*/
-
 const fetchProducts = async () => {
   await store.dispatch('GET_PRODUCTS_FROM_API');
 };

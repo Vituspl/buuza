@@ -230,7 +230,10 @@ onMounted(() => {
 
 // Вотчер отслеживает orders, и при его изменении вызывает ф-ию fetchOrders
 // т.е. перерисовывает компонент admin
-watch(orders, fetchOrders);
+watch(orders,
+    ()=>{
+      JSON.parse(localStorage.getItem("orders"));
+    });
 </script>
 
 <style scoped>

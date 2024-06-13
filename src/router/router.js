@@ -80,10 +80,7 @@ const routes = [
 ];
 
 const scrollBehavior = (to, from, savedPosition) => {
-    return {
-        top: 0,
-        left: 0
-    };
+    return { x: 0, y: 0 };
 };
 
 const router = createRouter({

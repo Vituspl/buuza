@@ -213,10 +213,16 @@ const trackOrder = (orderId) => {
   try {
     // isCreating.value = true;
 
+<<<<<<< HEAD
     const {data} = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
           orderItems: cart.value,
           user: user.value,
           descriptionOrder: `${date}`,
+=======
+    const {data} = await axios.post(`https://9b25d366b1aceedb.mokky.dev/orders`, {
+          items: cart.value,
+          descriptionOrder: `Дата заказа ${date}`,
+>>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653
           totalPrice: `Общая стоимость заказа  ${cartTotalCost.value} рублей`,
         },
     );

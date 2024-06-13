@@ -80,7 +80,7 @@ const routes = [
 ];
 
 const scrollBehavior = (to, from, savedPosition) => {
-    return savedPosition || {
+    return {
         top: 0,
         left: 0
     };

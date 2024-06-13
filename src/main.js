@@ -7,7 +7,7 @@ import App from './App.vue';
 import VueMask from '@devindex/vue-mask';
 
 // импорт новых js файлов
-import {store} from './vuex/store.js';
+import store from './vuex/store.js';
 import router from './router/router'
 // рендерим наш компонент сюда
 const app = createApp(App);

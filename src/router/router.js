@@ -79,13 +79,21 @@ const routes = [
     },
 ];
 
-const scrollBehavior = (to, from, savedPosition) => {
-    return { x: 0, y: 0 };
-};
+/*const scrollBehavior = (to, from, savedPosition) => {
+    /!*let position = {
+        x: 0,
+        y: 0
+    };
+    return { x: 0, y: 0 };*!/
+    return { top: 0 }
+};*/
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    scrollBehavior,
+    scrollBehavior(to, from, savedPosition) {
+        // всегда прокручивать до верха
+        return { top: 0 }
+    },
 });
 export default router;

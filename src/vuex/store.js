@@ -170,7 +170,7 @@ export const store = createStore({
                 let time = new Date().toLocaleTimeString('it-IT');
                 let orderId = Date.now().toString().slice(-4);
 
-                const response = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
+                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/orders', {
                         orderItems: state.cart,
                         userItems: state.user,
                         orderId: orderId,
@@ -259,7 +259,7 @@ export const store = createStore({
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
 
-                const response = await axios.post(`https://1102df40d9a2f61e.mokky.dev/sentOrders`, {
+                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/sentOrders', {
                         order,
                         dateSentOrder: date,
                         timeSentOrder: time
@@ -277,7 +277,7 @@ export const store = createStore({
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
 
-                const response = await axios.post(`https://1102df40d9a2f61e.mokky.dev/finishOrders`, {
+                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/finishOrders', {
                         order,
                         dateFinishOrder: date,
                         timeFinishOrder: time

@@ -145,7 +145,7 @@ export const store = createStore({
     // Акшены - асинхронны
     actions: {
         GET_PRODUCTS_FROM_API({commit}) {
-            return axios('https://1102df40d9a2f61e.mokky.dev/products', {
+            return axios('https://1cd51d745c6f03b7.mokky.dev/products', {
                 method: "GET"
             })
                 .then((products) => {
@@ -170,7 +170,7 @@ export const store = createStore({
                 let time = new Date().toLocaleTimeString('it-IT');
                 let orderId = Date.now().toString().slice(-4);
 
-                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/orders', {
+                const response = await axios.post('https://1cd51d745c6f03b7.mokky.dev/orders', {
                         orderItems: state.cart,
                         userItems: state.user,
                         orderId: orderId,
@@ -191,7 +191,7 @@ export const store = createStore({
 
         async GET_ORDERS_FROM_API({commit}) {
             try {
-                const response = await axios.get('https://1102df40d9a2f61e.mokky.dev/orders');
+                const response = await axios.get('https://1cd51d745c6f03b7.mokky.dev/orders');
 
                 commit('SET_ORDERS_TO_STATE', response.data);
             } catch (error) {
@@ -201,7 +201,7 @@ export const store = createStore({
         },
         async GET_SENT_ORDERS_FROM_API({commit}) {
             try {
-                const response = await axios.get('https://1102df40d9a2f61e.mokky.dev/sentOrders');
+                const response = await axios.get('https://1cd51d745c6f03b7.mokky.dev/sentOrders');
 
                 commit('SET_SENT_ORDERS_TO_STATE', response.data);
             } catch (error) {
@@ -211,7 +211,7 @@ export const store = createStore({
         },
         async GET_FINISH_ORDERS_FROM_API({commit}) {
             try {
-                const response = await axios.get('https://1102df40d9a2f61e.mokky.dev/finishOrders');
+                const response = await axios.get('https://1cd51d745c6f03b7.mokky.dev/finishOrders');
 
                 commit('SET_FINISH_ORDERS_TO_STATE', response.data);
             } catch (error) {
@@ -223,7 +223,7 @@ export const store = createStore({
         // Пока что разбираюсь????
         async DELETE_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://1102df40d9a2f61e.mokky.dev/orders/${order.id}`);
+                await axios.delete(`https://1cd51d745c6f03b7.mokky.dev/orders/${order.id}`);
                 commit('REMOVE_ORDER', index);
                 // console.log(order.id);
             } catch (error) {
@@ -234,7 +234,7 @@ export const store = createStore({
 
         async DELETE_SENT_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://1102df40d9a2f61e.mokky.dev/sentOrders/${order.id}`);
+                await axios.delete(`https://1cd51d745c6f03b7.mokky.dev/sentOrders/${order.id}`);
                 commit('REMOVE_SENT_ORDER', index);
                 // console.log(order.id);
             } catch (error) {
@@ -245,7 +245,7 @@ export const store = createStore({
 
         async DELETE_FINISH_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://1102df40d9a2f61e.mokky.dev/finishOrders/${order.id}`);
+                await axios.delete(`https://1cd51d745c6f03b7.mokky.dev/finishOrders/${order.id}`);
                 commit('REMOVE_FINISH_ORDER', index);
                 // console.log(order.id);
             } catch (error) {
@@ -259,7 +259,7 @@ export const store = createStore({
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
 
-                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/sentOrders', {
+                const response = await axios.post('https://1cd51d745c6f03b7.mokky.dev/sentOrders', {
                         order,
                         dateSentOrder: date,
                         timeSentOrder: time
@@ -277,7 +277,7 @@ export const store = createStore({
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
 
-                const response = await axios.post('https://1102df40d9a2f61e.mokky.dev/finishOrders', {
+                const response = await axios.post('https://1cd51d745c6f03b7.mokky.dev/finishOrders', {
                         order,
                         dateFinishOrder: date,
                         timeFinishOrder: time

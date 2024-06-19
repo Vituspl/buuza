@@ -5,6 +5,7 @@
     <h3 class="grid justify-items-center text-lg text-red-700 font-bold mb-4">Не выходите с этой страницы</h3>
 
     <div v-for="item in order" :key="item.id"
+         :order="order"
          @trackOrder="order"
          @sentOrder="sentOrders"
     >

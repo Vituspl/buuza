@@ -30,11 +30,13 @@
 
             <div class="flex gap-8">
               <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.order.order.dateOrder }} </b></span>
+              <span>Дата отправки заказа: <b class="text-lg text-red-500"> {{ order.order.dateSentOrder }} </b></span>
               <span>Дата исполнения заказа: <b class="text-lg text-red-500"> {{ order.dateFinishOrder }} </b></span>
             </div>
 
             <div class="flex gap-8">
               <span>Время заказа: <b class="text-lg text-red-500"> {{ order.order.order.timeOrder }} </b></span>
+              <span>Время отправки заказа: <b class="text-lg text-red-500"> {{ order.order.timeSentOrder }} </b></span>
               <span>Время исполнения заказа: <b class="text-lg text-red-500"> {{ order.timeFinishOrder }} </b></span>
             </div>
           </div>

@@ -17,7 +17,6 @@
                  v-for="sentOrder in sentOrders"
                  :key="sentOrder.id"
             >
-<!--              v-if="sentOrder.timeSentOrder"-->
 
               <h2 class="mt-4 font-bold text-xl text-green-500"
                   v-if="item.delivery === 'Доставка Курьером'"
@@ -28,7 +27,7 @@
               <h2 class="mt-4 font-bold text-xl text-green-500"
                   v-else-if="item.delivery === 'Самовывоз' || 'Заказы в кафе'"
               >
-                Ваш заказ готов в {{ sentOrder.timeSentOrder }} ({{ sentOrder.dateSentOrder }})
+                Ваш заказ № {{ sentOrder.id }} готов в {{ sentOrder.timeSentOrder }} ({{ sentOrder.dateSentOrder }})
               </h2>
 
               <h2 class="mt-4 font-bold text-xl text-green-500"
@@ -129,6 +128,7 @@ onMounted(() => {
   fetchSentOrders();
 });
 
+watch(sentOrders, fetchSentOrders);
 // const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
 // stop();

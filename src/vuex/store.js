@@ -173,7 +173,7 @@ export const store = createStore({
                 const response = await axios.post('https://f7df247f0c76b835.mokky.dev/orders', {
                         orderItems: state.cart,
                         userItems: state.user,
-                        orderId: Number(orderId),
+                        id: Number(orderId),
                         dateOrder: date,
                         timeOrder: time,
                         totalPrice: cartTotalCost.value,
@@ -223,7 +223,7 @@ export const store = createStore({
         // Пока что разбираюсь????
         async DELETE_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://f7df247f0c76b835.mokky.dev/orders/${+order.orderId}`);
+                await axios.delete(`https://f7df247f0c76b835.mokky.dev/orders/${order.id}`);
                 commit('REMOVE_ORDER', index);
                 // console.log(order.id);
             } catch (error) {
@@ -234,7 +234,7 @@ export const store = createStore({
 
         async DELETE_SENT_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://f7df247f0c76b835.mokky.dev/sentOrders/${+order.orderId}`);
+                await axios.delete(`https://f7df247f0c76b835.mokky.dev/sentOrders/${order.id}`);
                 commit('REMOVE_SENT_ORDER', index);
                 // console.log(order.id);
             } catch (error) {
@@ -245,7 +245,7 @@ export const store = createStore({
 
         async DELETE_FINISH_ORDER({commit}, {order, index}) {
             try {
-                await axios.delete(`https://f7df247f0c76b835.mokky.dev/finishOrders/${+order.orderId}`);
+                await axios.delete(`https://f7df247f0c76b835.mokky.dev/finishOrders/${order.id}`);
                 commit('REMOVE_FINISH_ORDER', index);
                 // console.log(order.id);
             } catch (error) {

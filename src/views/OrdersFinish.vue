@@ -26,7 +26,7 @@
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">
-            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.order.orderId }} </b></span>
+            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.order.id }} </b></span>
 
             <div class="flex gap-8">
               <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.order.order.dateOrder }} </b></span>
@@ -88,7 +88,7 @@
           <div class="flex justify-between ml-2 mt-2">
 
             <h2 class="mt-4 font-bold text-xl text-green-500">
-              Заказ Исполнен в {{ order.timeFinishOrder }} ({{ order.dateFinishOrder }})
+              Заказ № {{ order.order.order.id }} Исполнен в {{ order.timeFinishOrder }} ({{ order.dateFinishOrder }})
             </h2>
 
             <a class="flex items-center"

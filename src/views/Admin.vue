@@ -44,7 +44,7 @@
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">
-            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.orderId }} </b></span>
+            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.id }} </b></span>
             <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.dateOrder }} </b></span>
             <span>Время заказа: <b class="text-lg text-red-500"> {{ order.timeOrder }} </b></span>
           </div>
@@ -100,7 +100,7 @@
             <a v-if="order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
                 class="flex items-center"
                @click="sentOrder(order)">
-              <h2 class="font-bold">Отправить Заказ (Доставка):</h2>
+              <h2 class="font-bold">Отправить Заказ № {{ order.id }} (Доставка):</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"
@@ -111,7 +111,7 @@
             <a v-else-if="order.delivery === 'Самовывоз'"
                class="flex items-center"
                @click="sentOrder(order, index)">
-              <h2 class="font-bold">Заказ Готов (Самовывоз):</h2>
+              <h2 class="font-bold">Заказ Готов № {{ order.id }} (Самовывоз):</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"
@@ -121,7 +121,7 @@
 
             <a class="flex items-center"
                @click="deleteOrder(order, index)">
-              <h2 class="font-bold">Отмена Заказа:</h2>
+              <h2 class="font-bold">Отмена Заказа № {{ order.id }}:</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"

@@ -19,7 +19,7 @@
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">
-            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.orderId }} </b></span>
+            <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.id }} </b></span>
 
             <div class="flex gap-8">
               <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.order.dateOrder }} </b></span>
@@ -81,12 +81,12 @@
           <div class="flex justify-between ml-2 mt-2">
 
               <h2 class="mt-4 font-bold text-xl text-green-500">
-                Заказ отправлен в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
+                Заказ № {{ order.order.id }} отправлен в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
               </h2>
 
             <a class="flex items-center"
                @click="finishSentOrder(order, index)">
-              <h2 class="font-bold">Заказ Исполнен: (Оплачен)</h2>
+              <h2 class="font-bold">Заказ № {{ order.order.id }} Исполнен: (Оплачен)</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"
@@ -96,7 +96,7 @@
 
             <a class="flex items-center"
                @click="deleteSentOrder(order, index)">
-              <h2 class="font-bold">Отмена Заказа:</h2>
+              <h2 class="font-bold">Отмена Заказа № {{ order.order.id }}:</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"

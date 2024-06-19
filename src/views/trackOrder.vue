@@ -21,7 +21,7 @@
               <h2 class="mt-4 font-bold text-xl text-green-500"
                   v-if="item.delivery === 'Доставка Курьером'"
               >
-                Ваш заказ № {{ item.orderId }} отправлен в {{ sentOrder.timeSentOrder }} ({{ sentOrder.dateSentOrder }})
+                Ваш заказ № {{ sentOrder.id }} отправлен в {{ sentOrder.timeSentOrder }} ({{ sentOrder.dateSentOrder }})
               </h2>
 
               <h2 class="mt-4 font-bold text-xl text-green-500"
@@ -38,7 +38,7 @@
             </div>
 
             <div class="grid justify-items-center pt-2 mb-2">
-              <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ item.orderId }} </b></span>
+              <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ item.id }} </b></span>
               <span>Дата заказа: <b class="text-lg text-red-500"> {{ item.dateOrder }} </b></span>
               <span>Время заказа: <b class="text-lg text-red-500"> {{ item.timeOrder }} </b></span>
             </div>

@@ -23,7 +23,7 @@
       <CartEmpty
           v-if="orderDone"
           title="Заказ оформлен"
-          :description="`Ваш заказ: №${item.orderId} от ${item.dateOrder} принят в ${item.timeOrder}, мы Вам перезвоним в течении 15 минут`"
+          :description="`Ваш заказ: №${item.id} от ${item.dateOrder} принят в ${item.timeOrder}, мы Вам перезвоним в течении 15 минут`"
           image-url="/order-success-icon.png"
       />
 
@@ -35,7 +35,7 @@
           <new-button
               v-if="orderDone"
               label="Отследить заказ"
-              @click="trackOrder(item.orderId)"
+              @click="trackOrder(item.id)"
           />
         </router-link>
       </div>

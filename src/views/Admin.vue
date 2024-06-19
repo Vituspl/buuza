@@ -204,7 +204,7 @@ onMounted(() => {
 // const stop = watch(orders, fetchOrders);
 // const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
 watch(
-    [...orders],
+    orders,
     (orders, prevOrders)=>{
 orders.value = orders;
 },

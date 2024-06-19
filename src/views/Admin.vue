@@ -40,7 +40,7 @@
           v-for="(order, index) in filterOrders"
           :key="order.id"
           :id="order.id"
-          @createOrder="fetchOrders"
+          @createOrder="filterOrders"
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">
@@ -205,8 +205,8 @@ onMounted(() => {
 // const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
 watch(
     orders,
-    (orders)=>{
-      JSON.parse(localStorage.getItem("orders"));
+    ()=>{
+      orders.value;
 },
     { deep: true }
 );

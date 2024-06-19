@@ -122,9 +122,6 @@ const finishOrders = computed(() => store.getters.finishOrders);
 const fetchSentOrders = () => {
   store.dispatch('GET_SENT_ORDERS_FROM_API');
 };
-/*const fetchFinishOrders = () => {
-  store.dispatch('GET_FINISH_ORDERS_FROM_API');
-};*/
 
 onMounted(() => {
   fetchSentOrders();

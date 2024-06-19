@@ -34,11 +34,6 @@
       <h1 class="grid justify-items-center text-2xl font-bold mb-4">{{ props.title }}</h1>
     </div>
 
-<!--    @removeOrder="removeOrder(index)"-->
-<!--    @deleteOrder="deleteOrder(index)"-->
-<!--    @sentOrder="sentOrder(order)"-->
-<!--    @finishOrder="finishOrder(order, index)"-->
-
     <div class="mt-52">
       <div
           class="bg-slate-200 pl-4 pr-4 mb-4"
@@ -139,14 +134,12 @@
   </div>
 </template>
 
-<!--  ; removeUser(index)   -->
-
 <script setup>
 import NewButton from '@/components/UI/NewButton.vue';
 import OrdersNav from '@/components/OrdersNav.vue';
 
 
-import {computed, onBeforeMount, onMounted, ref, watch, watchEffect} from 'vue';
+import {computed, onMounted, watch, watchEffect} from 'vue';
 import {useStore} from 'vuex';
 
 const props = defineProps({
@@ -161,10 +154,7 @@ const props = defineProps({
     quantityCutlery: String,
     userNote: String,
   },
-  // isSentOrder: Boolean,
 });
-
-// const emit = defineEmits(['orderState']);
 
 const store = useStore();
 
@@ -184,38 +174,17 @@ const filterOrders = computed(() => {
 });
 // console.log(filterOrders);
 
-// const isSentOrder = ref(false);
-
 const sentOrder = (order, index) => {
   // console.log(index);
-  // isSentOrder.value = true;
-  // emit('orderState', order);
   store.dispatch('SENT_ORDER', {order});
   store.dispatch('DELETE_ORDER', {order, index});
 };
 
-/*const removeUser = (index) => {
-  store.dispatch('REMOVE_FROM_USER', index);
-  store.dispatch('REMOVE_ORDER', index);
-  // store.dispatch('DELETE_ORDER', orderId);
-};*/
-/*const finishOrder = (order, index)=>{
-  // console.log(order);
-  // store.dispatch('SENT_ORDER', {order});
-  // store.dispatch('DELETE_ORDER', {order, index});
-  store.dispatch('FINISH_ORDER', {order});
-  store.dispatch('DELETE_SENT_ORDER', {order, index});
-};*/
 const deleteOrder = (order, index) => {
   store.dispatch('REMOVE_FROM_USER', index);
   store.dispatch('DELETE_ORDER', {order, index});
 };
-/*const removeOrder = (index) => {
-  store.dispatch('REMOVE_ORDER', index);
-};*/
-/*const clearOrders = () => {
-  store.dispatch('CLEAR_ALL_ORDERS');
-};*/
+
 const clearOrders = () => {
   store.dispatch('CLEAR_ALL_ORDERS');
 };

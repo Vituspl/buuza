@@ -10,13 +10,6 @@
       <h1 class="grid justify-items-center text-2xl font-bold mb-4">{{ title }}</h1>
     </div>
 
-<!--    @removeOrder="removeOrder(index)"
-    @removeUser="removeUser(index)"
-    @sentOrder="sentOrder(order)"-->
-
-<!--    @finishOrder="finishSentOrder(order, index)"-->
-<!--    @deleteOrder="deleteSentOrder(index)"-->
-
     <div class="mt-52">
       <div
           class="bg-slate-200 pl-4 pr-4 mb-4"
@@ -136,14 +129,6 @@ const store = useStore();
 const sentOrders = computed(() => store.getters.sentOrders);
 // console.log(sentOrders);
 
-/*const sentOrder = (order, index) => {
-  store.dispatch('SENT_ORDER', {order});
-  store.dispatch('DELETE_ORDER', {order, index});
-};*/
-/*const removeOrder = (index) => {
-  store.dispatch('REMOVE_ORDER', index);
-};*/
-
 const finishSentOrder = (order, index)=>{
   // console.log(order);
   store.dispatch('FINISH_ORDER', {order});
@@ -164,7 +149,7 @@ onMounted(() => {
 
 // Вотчер отслеживает sentOrders, и при его изменении вызывает ф-ию fetchSentOrders
 // т.е. перерисовывает компонент OrderSent
-// watch(sentOrders, fetchSentOrders);
+const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
-// stop();
+stop();
 </script>

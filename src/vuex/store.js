@@ -173,7 +173,7 @@ export const store = createStore({
                 const response = await axios.post('https://f7df247f0c76b835.mokky.dev/orders', {
                         orderItems: state.cart,
                         userItems: state.user,
-                        orderId: +orderId,
+                        orderId: Number(orderId),
                         dateOrder: date,
                         timeOrder: time,
                         totalPrice: cartTotalCost.value,

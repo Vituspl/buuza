@@ -40,6 +40,7 @@
           v-for="(order, index) in filterOrders"
           :key="order.id"
           :id="order.id"
+          @createOrder="fetchOrders"
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">

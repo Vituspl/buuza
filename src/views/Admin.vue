@@ -205,8 +205,8 @@ onMounted(() => {
 // const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
 watch(
     orders,
-    (orders, prevOrders)=>{
-orders.value = orders;
+    (orders)=>{
+      JSON.parse(localStorage.getItem("orders"));
 },
     { deep: true }
 );

@@ -162,9 +162,9 @@ const store = useStore();
 // const order = computed(() => store.getters.ORDER);
 const orders = computed(() => store.getters.ORDERS);
 // console.log(orders.value);
-const users = computed(() => store.getters.USERS);
+// const users = computed(() => store.getters.USERS);
 // console.log(users.value);
-const user = computed(() => store.getters.USER);
+// const user = computed(() => store.getters.USER);
 // console.log(user.value);
 
 const filterOrders = computed(() => {
@@ -202,8 +202,15 @@ onMounted(() => {
 // т.е. перерисовывает компонент admin
 // watchEffect(orders, fetchOrders, {flush: 'post'});
 // const stop = watch(orders, fetchOrders);
-const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
-stop();
+// const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
+watch(
+    [...orders],
+    (orders, prevOrders)=>{
+orders.value = orders;
+},
+    { deep: true }
+);
+// stop();
 </script>
 
 <style scoped>

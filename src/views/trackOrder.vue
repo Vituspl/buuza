@@ -129,7 +129,7 @@ onMounted(() => {
   fetchSentOrders();
 });
 
-watch(sentOrder, fetchSentOrders, {deep: true});
+watch(sentOrders, fetchSentOrders, {deep: true});
 // const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
 // stop();

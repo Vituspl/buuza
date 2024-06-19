@@ -7,7 +7,7 @@
     <div v-for="item in order" :key="item.id"
          :order="order"
          @trackOrder="order"
-         @sentOrder="sentOrders"
+         @sentOrder="sentOrder"
     >
       <div class="mt-4">
         <div class="bg-slate-200 pl-4 pr-4 mb-4">
@@ -115,6 +115,7 @@ const store = useStore();
 const order = computed(() => store.getters.ORDER);
 // console.log(order.value);
 
+const sentOrder = computed(() => store.getters.sentOrder);
 const sentOrders = computed(() => store.getters.sentOrders);
 // console.log(sentOrders.value);
 
@@ -128,7 +129,7 @@ onMounted(() => {
   fetchSentOrders();
 });
 
-watchEffect(sentOrders, fetchSentOrders, {flush: 'post'});
+watch(sentOrder, fetchSentOrders, {deep: true});
 // const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
 // stop();

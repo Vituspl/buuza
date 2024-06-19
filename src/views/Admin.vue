@@ -200,10 +200,10 @@ onMounted(() => {
 
 // Вотчер отслеживает orders, и при его изменении вызывает ф-ию fetchOrders
 // т.е. перерисовывает компонент admin
-watchEffect(orders, fetchOrders, {flush: 'post'});
+// watchEffect(orders, fetchOrders, {flush: 'post'});
 // const stop = watch(orders, fetchOrders);
-// const stop = watchEffect(()=>[...orders.value], fetchOrders);
-// stop();
+const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
+stop();
 </script>
 
 <style scoped>

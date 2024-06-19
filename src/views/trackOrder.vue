@@ -128,7 +128,7 @@ onMounted(() => {
   fetchSentOrders();
 });
 
-watch(sentOrders, fetchSentOrders);
+watchEffect(sentOrders, fetchSentOrders, {flush: 'post'});
 // const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
 // stop();

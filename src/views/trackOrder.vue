@@ -6,6 +6,7 @@
 
     <div v-for="item in order" :key="item.id"
          @trackOrder="order"
+         @sentOrder="sentOrders"
     >
       <div class="mt-4">
         <div class="bg-slate-200 pl-4 pr-4 mb-4">

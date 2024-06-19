@@ -164,7 +164,7 @@ onMounted(() => {
 
 // Вотчер отслеживает sentOrders, и при его изменении вызывает ф-ию fetchSentOrders
 // т.е. перерисовывает компонент OrderSent
-watch(sentOrders, fetchSentOrders);
+// watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
 // stop();
 </script>

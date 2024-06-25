@@ -40,7 +40,7 @@
           v-for="(order, index) in filterOrders"
           :key="order.id"
           :id="order.id"
-          @createOrder="filterOrders"
+          :orders="orders"
       >
         <div>
           <div class="grid justify-items-center pt-2 mb-2">
@@ -140,10 +140,13 @@ import NewButton from '@/components/UI/NewButton.vue';
 import OrdersNav from '@/components/OrdersNav.vue';
 
 
-import {computed, onMounted, watch, watchEffect} from 'vue';
+import {computed, onMounted, ref, watch, watchEffect} from 'vue';
 import {useStore} from 'vuex';
 
 const props = defineProps({
+  orders: {
+    type: Array,
+  },
   title: {
     type: String,
     default: 'Все Заказы',
@@ -161,7 +164,7 @@ const store = useStore();
 
 // const order = computed(() => store.getters.ORDER);
 const orders = computed(() => store.getters.ORDERS);
-// console.log(orders.value);
+console.log(orders.value);
 // const users = computed(() => store.getters.USERS);
 // console.log(users.value);
 // const user = computed(() => store.getters.USER);
@@ -194,22 +197,28 @@ const fetchOrders = () => {
   store.dispatch('GET_ORDERS_FROM_API');
 };
 
+// const componentKey = ref(0);
+
+const forceRerender = () => {
+  // componentKey.value += 1;
+  // componentKey.value = orders.value.length;
+  window.location.reload();
+};
+
 onMounted(() => {
   fetchOrders();
 });
 
 // Вотчер отслеживает orders, и при его изменении вызывает ф-ию fetchOrders
 // т.е. перерисовывает компонент admin
+
+// watch(orders, forceRerender);
 // watchEffect(orders, fetchOrders, {flush: 'post'});
 // const stop = watch(orders, fetchOrders);
 // const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
-watch(
-    orders,
-    ()=>{
-      orders.value;
-},
-    { deep: true }
-);
+// const unwatch = watch(orders, fetchOrders);
+//
+// unwatch();
 // stop();
 </script>
 

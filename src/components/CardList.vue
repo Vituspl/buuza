@@ -42,6 +42,8 @@ defineProps(
     }
 );
 
+const emit = defineEmits(['decrement', 'increment']);
+
 const {activeCategory} = inject('cartActions');
 
 const store = useStore();

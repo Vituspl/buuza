@@ -96,6 +96,6 @@ const changeIsAdded = (product) => {
     margin-right: 15px;
     cursor: pointer;
   }
-}
+};
 </style>
 

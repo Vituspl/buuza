@@ -130,7 +130,7 @@ defineProps({
   cartTotalCost: Number,
 });
 
-const emit = defineEmits(['orderDone']);
+const emit = defineEmits(['orderDone', 'forceRerender']);
 
 const typeOrderGroup = reactive([
   {orderName: 'Доставка Курьером', id: 't1'},
@@ -217,6 +217,10 @@ const orderDone = () => {
   emit('orderDone');
 };
 
+/*const forceRerender = () => {
+  emit('forceRerender');
+};*/
+
 const submitForm = () => {
 // Проверяем соблюдение всех правил (rules) в форме инпутов
   v$.value.$touch();
@@ -227,6 +231,7 @@ const submitForm = () => {
   createUser(user);
   createOrder(delivery, payment);
   orderDone();
+  // forceRerender();
 
   return alert('Отправлено');
 };

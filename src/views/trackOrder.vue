@@ -129,10 +129,10 @@ onMounted(() => {
   fetchSentOrders();
 });
 
-const stop = watch(sentOrders, fetchSentOrders, {deep: true});
+// const stop = watch(sentOrders, fetchSentOrders, {deep: true});
 // const stop = watch(sentOrders, fetchSentOrders);
 // const stop = watchEffect(sentOrders, fetchSentOrders);
-stop();
+// stop();
 </script>
 
 <!--/*

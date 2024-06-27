@@ -144,8 +144,10 @@ const cartTotalCost = computed(function () {
 });
 
 const modalVisible = ref(false);
+
 const showModal = () => {
-  modalVisible.value = true;
+  // modalVisible.value = true;
+  modalVisible.value = !modalVisible.value;
 };
 
 const increment = (index) => {

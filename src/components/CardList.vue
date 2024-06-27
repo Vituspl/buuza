@@ -33,12 +33,6 @@ defineProps(
     {
       products: Array,
       product: Object,
-      // id: Number,
-      // quantity: Number,
-      // category: String,
-      // // activeCategory: String,
-      // isAdded: Boolean,
-      // ingredients: String,
     }
 );
 

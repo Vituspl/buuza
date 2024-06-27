@@ -1,13 +1,13 @@
 <template>
-  <div class="item">
-    <a @click="showModal">
-      <div class="dish-img">
+  <div class="w-full m-auto max-w-80">
+      <div class="relative text-center">
         <img :src="product.imageUrl" alt="Dish"/>
         <div class="dish-amount" v-if="product.quantity>=1 && product.isAdded">{{ product.quantity }}</div>
       </div>
-    </a>
 
     <div class="subtitle">{{ product.title }}</div>
+
+    <div class="text-blue-700">{{ product.ingredients }}</div>
 
     <div class="weight">Стоимость <b class="text-blue-700"> {{ product.price }} &#8381;</b></div>
 
@@ -15,7 +15,7 @@
       <button
           v-if="!product.isAdded"
           class="btn dish-add"
-          @click.stop="addToCart"
+          @click.stop="addToCartModal"
       >
         <b>В Корзину</b>
       </button>
@@ -42,23 +42,18 @@
           />
         </a>
       </button>
-
-      <new-modal v-model:show="modalVisible">
-        <ModalCard @addToCartModal="addToCart" :product="product"/>
-      </new-modal>
     </div>
   </div>
 </template>
 
 <script setup>
+
 import {useStore} from 'vuex';
-import {computed, ref} from 'vue';
-import NewModal from '@/components/UI/NewModal.vue';
-import ModalCard from '@/components/ModalCard.vue';
+import {computed} from 'vue';
 
 defineProps(['product']);
 
-const emit = defineEmits(['addToCart']);
+const emit = defineEmits(['addToCartModal']);
 
 const store = useStore();
 const cart = computed(() => store.getters.CART);
@@ -69,16 +64,10 @@ const decrementItemInCart = (product) => {
   }
 };
 
-const addToCart = () => {
-  emit('addToCart');
+const addToCartModal = () => {
+  emit('addToCartModal');
 };
 
-const modalVisible = ref(false);
-
-const showModal = () => {
-  // modalVisible.value = true;
-  modalVisible.value = !modalVisible.value;
-};
 </script>
 
 <style scoped>
@@ -110,10 +99,6 @@ const showModal = () => {
   padding: 5px;
   cursor: not-allowed;
   opacity: 0.8;
-}
-
-.dish-img {
-  position: relative;
 }
 
 .dish-amount {

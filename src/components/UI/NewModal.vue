@@ -1,12 +1,22 @@
 <template>
-  <div class="modal" v-if="show" @click="hideModal">
-    <div @click.stop class="modal__content">
+  <div class="modal" v-if="show">
+
+    <div class="modal__content">
+    <NewButton
+        class="mb-4"
+        label="Вернуться"
+        color="primary"
+        @click="hideModal"
+    />
+
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup>
+import NewButton from '@/components/UI/NewButton.vue';
+
 defineProps({
     show:{
       type: Boolean,
@@ -31,6 +41,7 @@ const hideModal = () =>{
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   display: flex;
+  z-index: 10;
 }
 
 .modal__content {
@@ -40,11 +51,6 @@ const hideModal = () =>{
   min-height: 50px;
   min-width: 300px;
   padding: 20px;
+  z-index: 20;
 }
-/*
-.app__btns {
-  margin: 15px 10px;
-  display: flex;
-  justify-content: space-between;
-}*/
 </style>

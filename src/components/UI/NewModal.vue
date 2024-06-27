@@ -41,7 +41,7 @@ const hideModal = () =>{
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   display: flex;
-  z-index: 10;
+  z-index: 200;
 }
 
 .modal__content {
@@ -51,6 +51,6 @@ const hideModal = () =>{
   min-height: 50px;
   min-width: 300px;
   padding: 20px;
-  z-index: 20;
+  z-index: 210;
 }
 </style>

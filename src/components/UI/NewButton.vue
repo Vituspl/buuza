@@ -48,6 +48,7 @@ defineProps({
 .btn-new {
   //margin-right: 10px;
   //margin-bottom: 10px;
+  //padding: 4px 5px 4px 5px;
   padding: 0 20px;
   height: 40px;
   color: #ffffff;

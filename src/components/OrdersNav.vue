@@ -32,6 +32,12 @@ const links = ref([
   {label: "Самовывоз", href: "/pickup"},
   {label: "Заказы в кафе", href: "/inHall"},
   {label: "Отправленные Заказы", href: "/sent"},
+  // {label: "Новые Заказы", href: "/admin"},
+  // {label: "Подтвержденные Заказы", href: "/confirm"},
+  // {label: "Доставка Курьером", href: "/delivery"},
+  // {label: "Самовывоз", href: "/pickup"},
+  // {label: "Заказы в кафе", href: "/inHall"},
+  // {label: "Отправленные Заказы", href: "/sent"},
 ]);
 </script>
 

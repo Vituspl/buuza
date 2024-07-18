@@ -10,7 +10,7 @@ import Admin from '@/views/Admin.vue';
 defineProps({
   title: {
     type: String,
-    default: 'Самовывоз',
+    default: 'Самовывоз (-10%)',
   },
 });
 </script>

@@ -71,8 +71,14 @@
               </div>
             </div>
             <span>Общая стоимость заказа:
-              <b class="ml-4 text-2xl text-orange-500">
+              <b v-if="order.order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
+                  class="ml-4 text-2xl text-orange-500">
               {{ order.order.totalPrice }} рублей
+              </b>
+
+              <b v-else-if="order.order.delivery === 'Самовывоз (-10%)'"
+                 class="ml-4 text-2xl text-orange-500">
+              {{ order.order.pickupPrice }} рублей (-10%)
               </b>
             </span>
           </div>

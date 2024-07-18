@@ -57,10 +57,18 @@
       />
 
       <div class="flex-1 flex-col gap-4 my-7">
+        <p class="text-xl text-red-700"><b>Стоимость заказа:</b></p>
+
         <div class="flex gap-2 text-xl text-blue-700">
-          <b>Стоимость заказа:</b>
+          <p><b>С доставкой:</b></p>
           <div class="flex-1 border-b-blue-500 border-b-2 border-dashed color"></div>
           <b>{{ cartTotalCost }} &#8381;</b>
+        </div>
+
+        <div class="flex gap-2 text-xl text-blue-700 mt-4">
+          <b>Самовывозом (-10%):</b>
+          <div class="flex-1 border-b-blue-500 border-b-2 border-dashed color"></div>
+          <b>{{ pickupTotalCost }} &#8381;</b>
         </div>
 
         <new-modal v-model:show="modalVisible">
@@ -142,6 +150,10 @@ const cartTotalCost = computed(function () {
     return 0;
   }
 });
+
+const pickupTotalCost = computed(()=>
+  cartTotalCost.value - Math.round((cartTotalCost.value * 10) / 100)
+);
 
 const modalVisible = ref(false);
 

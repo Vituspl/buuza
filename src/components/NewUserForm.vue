@@ -128,13 +128,14 @@ import {useStore} from 'vuex';
 
 defineProps({
   cartTotalCost: Number,
+  pickupTotalCost: Number,
 });
 
 const emit = defineEmits(['orderDone', 'forceRerender']);
 
 const typeOrderGroup = reactive([
   {orderName: 'Доставка Курьером', id: 't1'},
-  {orderName: 'Самовывоз', id: 't2'},
+  {orderName: 'Самовывоз (-10%)', id: 't2'},
   {orderName: 'Заказы в кафе', id: 't3'},
 ]);
 const typePaymentGroup = reactive([
@@ -204,13 +205,17 @@ const cartTotalCost = computed(function () {
   }
 });
 
+const pickupTotalCost = computed(()=>
+    cartTotalCost.value - Math.round((cartTotalCost.value * 10) / 100)
+);
+
 const createUser = (user) => {
   user.id = Date.now();
   store.dispatch('ADD_USER', user);
 };
 
 const createOrder = (delivery, payment) => {
-  store.dispatch('CREATE_ORDER', {cartTotalCost, delivery, payment});
+  store.dispatch('CREATE_ORDER', {cartTotalCost, pickupTotalCost, delivery, payment});
 };
 
 const orderDone = () => {

@@ -39,9 +39,6 @@ const cart = computed(() => store.getters.CART);
 // Получаю products через get запрос на сервер.
 // const products = ref([])
 
-// Получаю products из localStorage
-// const products = ref(v);
-
 const activeCategory = ref('Все Меню');
 
 const setCategory = (category) => {

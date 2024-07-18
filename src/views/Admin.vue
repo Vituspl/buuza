@@ -72,7 +72,6 @@
                 </li>
               </ul>
             </div>
-
           </div>
 
           <div class="flex flex-col text-lg mb-4">
@@ -88,8 +87,14 @@
               </div>
             </div>
             <span>Общая стоимость заказа:
-              <b class="ml-4 text-2xl text-orange-500">
+              <b v-if="order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
+                class="ml-4 text-2xl text-orange-500">
               {{ order.totalPrice }} рублей
+              </b>
+
+              <b v-else-if="order.delivery === 'Самовывоз (-10%)'"
+                class="ml-4 text-2xl text-orange-500">
+              {{ order.pickupPrice }} рублей
               </b>
             </span>
           </div>
@@ -179,7 +184,6 @@ const filterOrders = computed(() => {
 // console.log(filterOrders);
 
 const sentOrder = (order, index) => {
-  // console.log(index);
   store.dispatch('SENT_ORDER', {order});
   store.dispatch('DELETE_ORDER', {order, index});
 };
@@ -199,11 +203,11 @@ const fetchOrders = () => {
 
 // const componentKey = ref(0);
 
-const forceRerender = () => {
+/*const forceRerender = () => {
   // componentKey.value += 1;
   // componentKey.value = orders.value.length;
   window.location.reload();
-};
+};*/
 
 onMounted(() => {
   fetchOrders();

@@ -164,7 +164,7 @@ export const store = createStore({
                 });
         },
 
-        async CREATE_ORDER({state, commit}, {cartTotalCost, delivery, payment}) {
+        async CREATE_ORDER({state, commit}, {cartTotalCost, pickupTotalCost, delivery, payment}) {
             try {
                 let date = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
                 let time = new Date().toLocaleTimeString('it-IT');
@@ -177,6 +177,7 @@ export const store = createStore({
                         dateOrder: date,
                         timeOrder: time,
                         totalPrice: cartTotalCost.value,
+                        pickupPrice: pickupTotalCost.value,
                         delivery: delivery.value,
                         payment: payment.value,
                     },

@@ -4,6 +4,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Cart from '@/views/Cart.vue';
 import AppHome from '@/views/AppHome.vue';
 import Admin from '@/views/Admin.vue';
+import OrdersConfirm from '@/views/OrdersConfirm.vue';
 import ChangeMenu from '@/views/ChangeMenu.vue';
 import OrdersDelivery from '@/views/OrdersDelivery.vue';
 import OrdersPickup from '@/views/OrdersPickup.vue';
@@ -36,6 +37,11 @@ const routes = [
         path: '/menu',
         name: 'menu',
         component: ChangeMenu,
+    },
+    {
+        path: '/confirm',
+        name: 'confirm',
+        component: OrdersConfirm,
     },
     {
         path: '/delivery',

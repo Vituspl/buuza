@@ -113,7 +113,7 @@
               />
             </a>
 
-            <a v-else-if="order.delivery === 'Самовывоз'"
+            <a v-else-if="order.delivery === 'Самовывоз (-10%)'"
                class="flex items-center"
                @click="sentOrder(order, index)">
               <h2 class="font-bold">Заказ Готов № {{ order.id }} (Самовывоз):</h2>

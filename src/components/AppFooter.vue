@@ -1,8 +1,17 @@
 <template>
   <footer>
-    <div class="footer__address">
+    <router-link to="/deliveryText" >
+      <button
+          class="btn btn__delivery"
+          @click="showModal"
+      >
+        Условия доставки
+      </button>
+    </router-link>
+
+<!--    <div class="footer__address">
       Наш адрес: г. Ангарск , <br> 33-й микрорайон, 14
-    </div>
+    </div>-->
 
     <router-link to="/confidential">
       <button class="btn btn__manual">
@@ -13,10 +22,10 @@
   </footer>
 </template>
 
-<script>
-export default {
+<script setup>
+/*export default {
   name: "AppFooter"
-};
+};*/
 </script>
 
 <style scoped>

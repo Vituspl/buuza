@@ -104,7 +104,7 @@
 
             <a v-if="order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
                 class="flex items-center"
-               @click="sentOrder(order)">
+               @click="sentOrder(order, index)">
               <h2 class="font-bold">Отправить Заказ № {{ order.id }} (Доставка):</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
@@ -116,7 +116,7 @@
             <a v-else-if="order.delivery === 'Самовывоз (-10%)'"
                class="flex items-center"
                @click="sentOrder(order, index)">
-              <h2 class="font-bold">Заказ Готов № {{ order.id }} (Самовывоз):</h2>
+              <h2 class="font-bold">Заказ № {{ order.id }} Готов (Самовывоз):</h2>
               <img
                   class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
                   src="/close-full-red-48.svg"

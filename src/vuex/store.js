@@ -2,7 +2,6 @@ import {createStore} from 'vuex';
 import axios from 'axios';
 
 export const store = createStore({
-
     state: {
         products: JSON.parse(localStorage.getItem("products")) || [],
         cart: JSON.parse(localStorage.getItem("cart")) || [],
@@ -221,7 +220,6 @@ export const store = createStore({
             }
         },
 
-        // Пока что разбираюсь????
         async DELETE_ORDER({commit}, {order, index}) {
             try {
                 await axios.delete(`https://f7df247f0c76b835.mokky.dev/orders/${order.id}`);

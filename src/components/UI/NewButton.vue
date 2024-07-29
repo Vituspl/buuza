@@ -3,7 +3,6 @@
     <!-- бандим класс btn-new - основной, `btn_${color}` - модификатор класса по цвету -->
     <button
         :class="['btn-new', `btn-new_${color}`, {'btn-new_outlined': outlined}]"
-
     >
       {{ label }}
     </button>

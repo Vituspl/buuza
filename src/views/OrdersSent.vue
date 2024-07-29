@@ -58,9 +58,20 @@
 
           </div>
 
-          <div class="flex flex-col text-lg mb-4">
+          <div class="flex flex-col text-lg mb-2">
             <h2><b>Состав заказа:</b></h2>
-            <div v-for="(el) in order.order.orderItems" :key="el.id">
+
+              <button
+                  :class="['btn-new', `btn-new_${color}`]"
+                  v-on:click="visible=!visible"
+              >
+                {{ visible ? 'Свернуть' : 'Развернуть' }}
+              </button>
+
+            <div v-show="visible"
+                v-for="(el) in order.order.orderItems"
+                :key="el.id"
+            >
               <div class="flex justify-between items-center border-solid border-2 border-indigo-600 pl-4 mb-2">
                 <ul>
                   <li>Наименование блюда: <b class="ml-10 text-xl text-green-600">{{ el.title }}</b></li>
@@ -70,15 +81,16 @@
                 </ul>
               </div>
             </div>
+
             <span>Общая стоимость заказа:
-              <b v-if="order.order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
+              <b v-if="order.order.delivery === 'Доставка Курьером' || order.order.delivery === 'Заказы в кафе'"
                   class="ml-4 text-2xl text-orange-500">
               {{ order.order.totalPrice }} рублей
               </b>
 
               <b v-else-if="order.order.delivery === 'Самовывоз (-10%)'"
                  class="ml-4 text-2xl text-orange-500">
-              {{ order.order.pickupPrice }} рублей (-10%)
+              {{ order.order.pickupPrice }} рублей
               </b>
             </span>
           </div>
@@ -86,9 +98,17 @@
           <h3><b>Состояние Заказа:</b></h3>
           <div class="flex justify-between ml-2 mt-2">
 
-              <h2 class="mt-4 font-bold text-xl text-green-500">
+              <h2 v-if="order.order.delivery === 'Доставка Курьером' || order.order.delivery === 'Заказы в кафе'"
+                  class="font-bold text-xl text-green-500"
+              >
                 Заказ № {{ order.order.id }} отправлен в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
               </h2>
+
+            <h2 v-else-if="order.order.delivery === 'Самовывоз (-10%)'"
+                class="font-bold text-xl text-green-500"
+            >
+              Заказ № {{ order.order.id }} Готов в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
+            </h2>
 
             <a class="flex items-center"
                @click="finishSentOrder(order, index)">
@@ -121,14 +141,20 @@ import BackMenu from '@/components/UI/BackMenu.vue';
 import OrdersNav from '@/components/OrdersNav.vue';
 
 import {useStore} from 'vuex';
-import {computed, onMounted, watch, watchEffect} from 'vue';
+import {computed, onMounted, ref, watch, watchEffect} from 'vue';
 
 defineProps({
   title: {
     type: String,
     default: 'Отправленные Заказы',
   },
+  color: {
+    type: String,
+    default: 'primary'
+  },
 });
+
+const visible = ref(false);
 
 const store = useStore();
 
@@ -153,9 +179,28 @@ onMounted(() => {
   fetchSentOrders();
 });
 
-// Вотчер отслеживает sentOrders, и при его изменении вызывает ф-ию fetchSentOrders
-// т.е. перерисовывает компонент OrderSent
-// const stop = watch(sentOrders, fetchSentOrders);
-// const stop = watchEffect(sentOrders, fetchSentOrders);
-// stop();
 </script>
+
+<style lang="scss" scoped>
+.btn-new {
+  margin-bottom: 6px;
+  padding: 0 20px;
+  width: 150px;
+  height: 30px;
+  color: #ffffff;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: .2s;
+
+  &_primary {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+
+    &:enabled:hover {
+      background: var(--primary-hover);
+    }
+  }
+}
+</style>

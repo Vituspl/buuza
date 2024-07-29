@@ -53,8 +53,8 @@
             <h2><b>Данные заказчика:</b></h2>
             <div v-for="(item) in order.userItems" :key="item.id">
               <ul class="flex gap-10 mb-2">
-                <li>Заказчик: <b class="text-lg text-red-500">{{ item.userName }}</b></li>
                 <li>Телефон заказчика: <b class="text-lg text-red-500"> +7 {{ item.userPhone }}</b></li>
+                <li>Заказчик: <b class="text-lg text-red-500">{{ item.userName }}</b></li>
                 <li>Адрес доставки заказчика: <b class="text-lg text-red-500">{{ item.userAddress }}</b></li>
               </ul>
               <div class="flex-col">
@@ -74,9 +74,20 @@
             </div>
           </div>
 
-          <div class="flex flex-col text-lg mb-4">
+          <div class="flex flex-col text-lg mb-2">
             <h2><b>Состав заказа:</b></h2>
-            <div v-for="(item) in order.orderItems" :key="item.id">
+
+            <button
+                :class="['btn-new', `btn-new_${color}`]"
+                v-on:click="visible=!visible"
+            >
+              {{ visible ? 'Свернуть' : 'Развернуть' }}
+            </button>
+
+            <div v-show="visible"
+                 v-for="(item) in order.orderItems"
+                 :key="item.id"
+            >
               <div class="flex justify-between items-center border-solid border-2 border-indigo-600 pl-4 mb-2">
                 <ul>
                   <li>Наименование блюда: <b class="ml-10 text-xl text-green-600">{{ item.title }}</b></li>
@@ -86,14 +97,15 @@
                 </ul>
               </div>
             </div>
+
             <span>Общая стоимость заказа:
               <b v-if="order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
-                class="ml-4 text-2xl text-orange-500">
+                 class="ml-4 text-2xl text-orange-500">
               {{ order.totalPrice }} рублей
               </b>
 
               <b v-else-if="order.delivery === 'Самовывоз (-10%)'"
-                class="ml-4 text-2xl text-orange-500">
+                 class="ml-4 text-2xl text-orange-500">
               {{ order.pickupPrice }} рублей
               </b>
             </span>
@@ -103,7 +115,7 @@
           <div class="flex justify-between ml-2 mt-2">
 
             <a v-if="order.delivery === 'Доставка Курьером' || order.delivery === 'Заказы в кафе'"
-                class="flex items-center"
+               class="flex items-center"
                @click="sentOrder(order, index)">
               <h2 class="font-bold">Отправить Заказ № {{ order.id }} (Доставка):</h2>
               <img
@@ -145,7 +157,7 @@ import NewButton from '@/components/UI/NewButton.vue';
 import OrdersNav from '@/components/OrdersNav.vue';
 
 
-import {computed, onMounted, ref, watch, watchEffect} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useStore} from 'vuex';
 
 const props = defineProps({
@@ -163,17 +175,19 @@ const props = defineProps({
     quantityCutlery: String,
     userNote: String,
   },
+  color: {
+    type: String,
+    default: 'primary'
+  },
 });
+
+const visible = ref(false);
 
 const store = useStore();
 
 // const order = computed(() => store.getters.ORDER);
 const orders = computed(() => store.getters.ORDERS);
-console.log(orders.value);
-// const users = computed(() => store.getters.USERS);
-// console.log(users.value);
-// const user = computed(() => store.getters.USER);
-// console.log(user.value);
+// console.log(orders.value);
 
 const filterOrders = computed(() => {
   if (props.title === 'Все Заказы') {
@@ -197,37 +211,58 @@ const clearOrders = () => {
   store.dispatch('CLEAR_ALL_ORDERS');
 };
 
-const fetchOrders = () => {
+/*const fetchOrders = () => {
   store.dispatch('GET_ORDERS_FROM_API');
-};
-
-// const componentKey = ref(0);
-
-/*const forceRerender = () => {
-  // componentKey.value += 1;
-  // componentKey.value = orders.value.length;
-  window.location.reload();
 };*/
 
+const timeoutFetchOrders = () => {
+  let count = 1;
+  let timerId = setTimeout(function fetchOrders() {
+    store.dispatch('GET_ORDERS_FROM_API');
+    if (count < 800) {
+      count++;
+      timerId = setTimeout(fetchOrders, 60000);
+    } else {
+      clearTimeout(timerId);
+    }
+  }, 60000);
+};
+
 onMounted(() => {
-  fetchOrders();
+  // fetchOrders()
+  // setInterval(fetchOrders, 60000);
+  // Здесь рекурсивный вызов setTimeout каждую минуту (точнее чем setInterval)
+  /* let timerId = setTimeout(function fetchSentOrders() {
+     store.dispatch('GET_ORDERS_FROM_API');
+     timerId = setTimeout(fetchSentOrders, 60000);
+   }, 60000);*/
+
+  timeoutFetchOrders();
 });
-
-// Вотчер отслеживает orders, и при его изменении вызывает ф-ию fetchOrders
-// т.е. перерисовывает компонент admin
-
-// watch(orders, forceRerender);
-// watchEffect(orders, fetchOrders, {flush: 'post'});
-// const stop = watch(orders, fetchOrders);
-// const stop = watchEffect(()=>[...orders.value], fetchOrders, {deep: true}, {flush: 'post'});
-// const unwatch = watch(orders, fetchOrders);
-//
-// unwatch();
-// stop();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.btn-new {
+  margin-bottom: 6px;
+  padding: 0 20px;
+  width: 150px;
+  height: 30px;
+  color: #ffffff;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: .2s;
 
+  &_primary {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+
+    &:enabled:hover {
+      background: var(--primary-hover);
+    }
+  }
+}
 </style>
 
 

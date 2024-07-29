@@ -49,18 +49,9 @@
         </div>
       </div>
 
-      <p class="mb-6 text-sm text-red-700">
+      <p class="mb-4 text-sm text-red-700">
         "Используйте Ваш сотовый номер телефона. Иначе по городскому позвоните нам 8(904) 142-11-88"
       </p>
-      <new-input
-          label="* Обязательно к заполнению"
-          color="warning"
-          placeholder="Введите Ваше имя"
-          name="name"
-          v-model:value.trim="v$.user.userName.$model"
-          :error="v$.user.userName.$errors"
-      />
-
       <new-input
           label="* Обязательно к заполнению"
           color="warning"
@@ -71,7 +62,16 @@
           :error="v$.user.userPhone.$errors"
       />
 
-      <p class="text-sm text-blue-700">
+      <new-input
+          label="* Обязательно к заполнению"
+          color="warning"
+          placeholder="Введите Ваше имя"
+          name="name"
+          v-model:value.trim="v$.user.userName.$model"
+          :error="v$.user.userName.$errors"
+      />
+
+      <p class="mb-4 text-sm text-blue-700">
         "Пишите Адрес только, если заказываете доставку."
         <br/>
         "Если Вы в кафе, то укажите № столика"
@@ -131,7 +131,7 @@ defineProps({
   pickupTotalCost: Number,
 });
 
-const emit = defineEmits(['orderDone', 'forceRerender']);
+const emit = defineEmits(['orderDone']);
 
 const typeOrderGroup = reactive([
   {orderName: 'Доставка Курьером', id: 't1'},
@@ -149,8 +149,8 @@ const payment = ref('');
 // console.log(payment);
 
 const user = reactive({
-  userName: '',
   userPhone: '',
+  userName: '',
   userAddress: '',
   quantityCutlery: '',
   userNote: '',
@@ -159,14 +159,14 @@ const user = reactive({
 
 const rules = computed(() => ({
   user: {
-    userName: {
-      required: helpers.withMessage(`Обязательно надо заполнить`, required),
-      // alpha: helpers.withMessage(`Вы можете ввести только буквы`, alpha)
-    },
     userPhone: {
       required: helpers.withMessage(`Обязательно надо заполнить`, required),
       maxLength: helpers.withMessage('Надо ввести: не более 10 цифр', maxLength(14)),
       minLength: helpers.withMessage(`Надо ввести: не менее 10 цифр`, minLength(14)),
+    },
+    userName: {
+      required: helpers.withMessage(`Обязательно надо заполнить`, required),
+      // alpha: helpers.withMessage(`Вы можете ввести только буквы`, alpha)
     },
     userAddress: {
       requiredIfCourier: helpers.withMessage('Обязательно укажите адрес', requiredIf(delivery.value === 'Доставка Курьером')),
@@ -222,10 +222,6 @@ const orderDone = () => {
   emit('orderDone');
 };
 
-/*const forceRerender = () => {
-  emit('forceRerender');
-};*/
-
 const submitForm = () => {
 // Проверяем соблюдение всех правил (rules) в форме инпутов
   v$.value.$touch();
@@ -236,7 +232,6 @@ const submitForm = () => {
   createUser(user);
   createOrder(delivery, payment);
   orderDone();
-  // forceRerender();
 
   return alert('Отправлено');
 };

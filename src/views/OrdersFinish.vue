@@ -67,9 +67,12 @@
 
           </div>
 
-          <div class="flex flex-col text-lg mb-4">
+          <div class="flex flex-col text-lg mb-2">
             <h2><b>Состав заказа:</b></h2>
-            <div v-for="(el) in order.order.order.orderItems" :key="el.id">
+            <div v-show="visible"
+                v-for="(el) in order.order.order.orderItems"
+                :key="el.id"
+            >
               <div class="flex justify-between items-center border-solid border-2 border-indigo-600 pl-4 mb-2">
                 <ul>
                   <li>Наименование блюда: <b class="ml-10 text-xl text-green-600">{{ el.title }}</b></li>
@@ -79,6 +82,14 @@
                 </ul>
               </div>
             </div>
+
+            <button
+                :class="['btn-new', `btn-new_${color}`]"
+                v-on:click="visible=!visible"
+            >
+              {{ visible ? 'Свернуть' : 'Развернуть' }}
+            </button>
+
             <span>Общая стоимость заказа:
               <b class="ml-4 text-2xl text-orange-500">
               {{ order.order.order.totalPrice }} рублей
@@ -89,7 +100,7 @@
           <h3><b>Состояние Заказа:</b></h3>
           <div class="flex justify-between ml-2 mt-2">
 
-            <h2 class="mt-4 font-bold text-xl text-green-500">
+            <h2 class="font-bold text-xl text-green-500">
               Заказ № {{ order.order.order.id }} Исполнен в {{ order.timeFinishOrder }} ({{ order.dateFinishOrder }})
             </h2>
 
@@ -114,14 +125,20 @@ import BackMenu from '@/components/UI/BackMenu.vue';
 import OrdersNav from '@/components/OrdersNav.vue';
 
 import {useStore} from 'vuex';
-import {computed, onMounted, watch, watchEffect} from 'vue';
+import {computed, onMounted, ref, watch, watchEffect} from 'vue';
 
 defineProps({
   title: {
     type: String,
     default: 'Исполненные Заказы',
   },
+  color: {
+    type: String,
+    default: 'primary'
+  },
 });
+
+const visible = ref(false);
 
 const store = useStore();
 
@@ -147,3 +164,27 @@ onMounted(() => {
 // const stop = watchEffect(finishOrders, fetchFinishOrders);
 // stop();
 </script>
+
+<style lang="scss" scoped>
+.btn-new {
+  margin-bottom: 6px;
+  padding: 0 20px;
+  width: 150px;
+  height: 30px;
+  color: #ffffff;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: .2s;
+
+  &_primary {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+
+    &:enabled:hover {
+      background: var(--primary-hover);
+    }
+  }
+}
+</style>

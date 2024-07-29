@@ -29,7 +29,7 @@ import NewButton from '@/components/UI/NewButton.vue';
 const links = ref([
   {label: "Все заказы", href: "/admin"},
   {label: "Доставка Курьером", href: "/delivery"},
-  {label: "Самовывоз", href: "/pickup"},
+  {label: "Самовывоз (-10%)", href: "/pickup"},
   {label: "Заказы в кафе", href: "/inHall"},
   {label: "Отправленные Заказы", href: "/sent"},
   // {label: "Новые Заказы", href: "/admin"},

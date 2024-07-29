@@ -151,6 +151,7 @@ const cartTotalCost = computed(function () {
   }
 });
 
+// Расчет стоимости заказа для Самовывоза
 const pickupTotalCost = computed(()=>
   cartTotalCost.value - Math.round((cartTotalCost.value * 10) / 100)
 );

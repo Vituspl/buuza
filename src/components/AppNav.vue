@@ -1,18 +1,5 @@
 <template>
   <nav>
-<!--    <new-modal v-model:show="modalVisible">
-      <delivery-text/>
-    </new-modal>-->
-
-<!--    <router-link to="/deliveryText" >
-      <button
-          class="btn btn__delivery"
-          @click="showModal"
-      >
-        Условия доставки
-      </button>
-    </router-link>-->
-
     <div class="text-sm text-white">
       Наш адрес: г. Ангарск , <br> 33-й микрорайон, 14
     </div>
@@ -28,15 +15,7 @@
 </template>
 
 <script setup>
-import NewModal from '@/components/UI/NewModal.vue';
-import DeliveryText from '@/views/DeliveryText.vue';
 
-/*import {ref} from 'vue';
-
-const modalVisible = ref(false);
-const showModal = () => {
-  modalVisible.value = true;
-};*/
 </script>
 
 <style scoped>

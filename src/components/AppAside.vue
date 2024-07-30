@@ -1,45 +1,63 @@
 <template>
   <aside>
     <div class="items">
-
       <button
-          v-for="value in categoryes"
+          v-for="(value, index) in categoryes"
           :key="value.category"
           :src="value.src"
           class="btn item"
-          @click="sendCategory(value.name)"
+          :style="{
+            'background-color': activeButton === index + 1 ? background : '',
+            'color': activeButton === index + 1 ? color : ''
+          }"
+          @click="sendCategory(value.name); setActive(index)"
       >
-        <span>{{ value.name }}</span>
+        {{ value.name }}
       </button>
-
     </div>
   </aside>
 
   <div class="row">
     <div class="items">
       <button
-          v-for="value in categoryes"
+          v-for="(value, index) in categoryes"
           :key="value.category"
           :src="value.src"
-
           class="btn item"
-          @click="sendCategory(value.name)"
+          :style="{
+            'background-color': activeButton === index + 1 ? background : '',
+            'color': activeButton === index + 1 ? color : ''
+          }"
+          @click="sendCategory(value.name); setActive(index)"
       >
         <img :src="value.src" width="40px" height="40px" alt=""/>
-        <p>{{ value.name }}</p>
+        {{ value.name }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
+import {ref} from 'vue';
+
 defineProps({
   category: String,
   activeCategory: String,
   label: String,
+  background: String,
+  color: String,
 });
 
 const emit = defineEmits(['setCategory']);
+
+const activeButton = ref(0);
+
+const setActive = (index) => {
+  activeButton.value = index + 1;
+};
+
+const background = ref('orange');
+const color = ref('#0e4199')
 
 function sendCategory(category) {
   emit('setCategory', category);
@@ -53,7 +71,7 @@ const categoryes = [
   {name: 'Пельмени', src: "/images/icons/icons8-pelmeni-50.png"},
   {name: 'Сковороды', src: "/images/icons/icons8-skovoroda-50.png"},
   {name: 'На компанию', src: "/images/icons/icons8-assorti-50.png"},
-  {name: 'К Пиву', src: "/images/icons/shrimp_2-50x56.png"},
+  {name: 'к пиву', src: "/images/icons/shrimp_2-50x56.png"},
   // {name: 'К Пиву', src: "/images/icons/shrimp-50x50.png"},
   {name: 'Нагетсы', src: "/images/icons/icons8-chicken-64.png"},
   {name: 'Супы', src: "/images/icons/icons8-sup-64.png"},
@@ -72,25 +90,23 @@ const categoryes = [
 <style scoped>
 .btn {
   display: block;
+  font-family: 'SFProDisplay-Regular', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  transition: .5s;
+}
+.btn:enabled:hover {
+  background: #FFC7A6;
+  color: #0e4199;
+}
+.btn:enabled:active {
+  color: #0e4199;
+  background: orange;
 }
 
 img {
   margin: 0 auto 10px;
-}
-
-p {
-  color: #00FF00;
-  font-size: 14px;
-  white-space: pre-wrap;
-  margin: 0 auto 5px;
-}
-
-.orange {
-  background-color: orange;
-}
-
-.category {
-  background-color: blue;
 }
 </style>
 

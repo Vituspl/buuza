@@ -114,6 +114,10 @@ const showModal = () => {
 
 .dish-img {
   position: relative;
+  cursor: pointer;
+}
+.dish-img:hover {
+  transform: scale(1.1);
 }
 
 .dish-amount {

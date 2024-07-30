@@ -94,7 +94,7 @@ const categoryes = [
   font-size: 18px;
   font-weight: 600;
   color: #ffffff;
-  transition: .5s;
+  transition: .4s;
 }
 .btn:enabled:hover {
   background: #FFC7A6;

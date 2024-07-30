@@ -187,7 +187,7 @@ nav {
     max-width: 1270px;
     min-width: 350px;
     justify-content: space-around;
-    margin: 0 auto 10px;
+    margin: 0 auto;
     z-index: 100;
 }
 
@@ -217,7 +217,7 @@ nav .header__tel {
 .row {
     display: none;
     position: fixed;
-    top: 130px;
+    top: 120px;
     width: 100%;
     z-index: 10;
 }
@@ -264,20 +264,9 @@ nav .header__tel {
     cursor: pointer;
 }
 
-/*.row .items .item:enabled:hover {
-    background: #FFC7A6;
-    color: #0e4199;
-}*/
-
-/*.row .items .item span {
-    font-family: 'SFProDisplay-Regular', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-}*/
-
 .dish-menu {
     display: flex;
-    margin-top: 131px;
+    margin-top: 121px;
 }
 
 @media screen and (max-width: 900px) {
@@ -329,7 +318,7 @@ nav .header__tel {
     grid-template-columns: 996px;
     margin-right: 5px;
     margin-left: 5px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 5px;
     /*min-width: 348px;*/
     /*max-width: 1010px;*/

@@ -96,6 +96,9 @@ const showModal = () => {
   padding: 5px;
   cursor: pointer;
 }
+.dish-add:hover {
+  background: #FFC7A6;
+}
 
 .dish-added {
   display: flex;
@@ -117,7 +120,8 @@ const showModal = () => {
   cursor: pointer;
 }
 .dish-img:hover {
-  transform: scale(1.1);
+  transform: scale(1.02);
+  transition: all .4s;
 }
 
 .dish-amount {

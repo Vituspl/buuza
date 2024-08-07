@@ -120,7 +120,7 @@ const showModal = () => {
   cursor: pointer;
 }
 .dish-img:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
   transition: all .4s;
 }
 

@@ -9,9 +9,6 @@
   </div>
 </template>
 
-<!--@click="clickOnButton"-->
-<!--:disabled="disabled"-->
-
 <script setup>
 // Прописываем свойства(пропсы) для универсальной кнопки
 defineProps({
@@ -34,12 +31,6 @@ defineProps({
     required: false
   },
 });
-
-// const emit = defineEmits(['done'])
-
-// const clickOnButton = () => {
-//   emit('done')
-// }
 </script>
 
 <style lang="scss" scoped>

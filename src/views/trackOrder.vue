@@ -4,13 +4,11 @@
     <h2 class="grid justify-items-center text-xl font-bold mb-4">Отслеживание Вашего Заказа</h2>
     <h3 class="grid justify-items-center text-lg text-red-700 font-bold mb-4">Не выходите с этой страницы</h3>
 
-    <div v-for="item in order" :key="item.id"
+    <div v-for="item in order"
+         :key="item.id"
          :order="order"
          @trackOrder="order"
     >
-<!--      @sentOrder="sentOrder"-->
-<!--      v-if="sentOrder.order.id === item.id"-->
-
       <div class="mt-4">
         <div class="bg-slate-200 pl-4 pr-4 mb-4">
           <div>
@@ -42,6 +40,33 @@
               </h2>
             </div>
 
+            <div class="flex justify-between ml-2 mt-2"
+                 v-for="finishOrder in finishOrders"
+                 :key="finishOrder.id"
+            >
+
+              <h2 class="mt-4 font-bold text-xl text-green-500"
+                  v-if="!finishOrder.order.id === item.id"
+              >
+                Ваш заказ готовится
+              </h2>
+
+              <h2 class="font-bold text-xl text-green-500"
+                  v-else-if="item.delivery === 'Доставка Курьером' && finishOrder.order.order.id === item.id"
+              >
+                Ваш заказ № {{ finishOrder.order.order.id }} исполнен в {{ finishOrder.timeFinishOrder }}
+                ({{ finishOrder.dateFinishOrder }})
+              </h2>
+
+              <h2 class="font-bold text-xl text-green-500"
+                  v-else-if="(item.delivery === 'Самовывоз (-10%)' || 'Заказы в кафе') && (finishOrder.order.order.id === item.id)"
+              >
+                Ваш заказ № {{ finishOrder.order.order.id }} исполнен в {{ finishOrder.timeFinishOrder }} ({{
+                  finishOrder.dateFinishOrder
+                }})
+              </h2>
+            </div>
+
             <div class="grid justify-items-center mb-2">
               <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ item.id }} </b></span>
               <span>Дата заказа: <b class="text-lg text-red-500"> {{ item.dateOrder }} </b></span>
@@ -53,9 +78,8 @@
               <div v-for="(user) in item.userItems" :key="user.id">
                 <ul class="flex-col">
                   <li>Заказчик: <b class="text-lg text-red-500">{{ user.userName }}</b></li>
-                  <!--                  <li>id Заказчика: <b class="text-lg text-red-500">{{ user.id }}</b></li>-->
                   <li>Телефон заказчика: <b class="text-lg text-red-500"> +7 {{ user.userPhone }}</b></li>
-                  <li>Адрес доставки заказчика: <b class="text-lg text-red-500">{{ user.userAddress }}</b></li>
+<!--                  <li>Адрес доставки заказчика: <b class="text-lg text-red-500">{{ user.userAddress }}</b></li>-->
                 </ul>
 
                 <div class="flex-col">
@@ -128,6 +152,12 @@ defineProps({
     type: Array,
     // required: true,
   },
+  sentOrder:{
+    type: Array,
+  },
+  finishOrder:{
+    type: Array,
+  },
   id: {
     type: Number,
   },
@@ -150,14 +180,12 @@ const sentOrders = computed(() => store.getters.sentOrders);
 // console.log(sentOrders.value);
 
 const finishOrders = computed(() => store.getters.finishOrders);
+console.log(finishOrders.value);
 
-/*const fetchSentOrders = () => {
-  store.dispatch('GET_SENT_ORDERS_FROM_API');
-};*/
-
-/*function fetchSentOrders() {
-  store.dispatch('GET_SENT_ORDERS_FROM_API');
-}*/
+const deleteOrder = (order, index) => {
+  store.dispatch('REMOVE_FROM_USER', index);
+  store.dispatch('DELETE_ORDER', {order, index});
+};
 
 // Здесь рекурсивный вызов setTimeout каждую минуту (точнее чем setInterval)
 // Если ожидание отправки заказа превысило 60 минут, то отслеживание должно прекратиться
@@ -165,6 +193,8 @@ const timeoutFetchTrack = () => {
   let count = 1;
   let timerId = setTimeout(function fetchSentOrders() {
     store.dispatch('GET_SENT_ORDERS_FROM_API');
+    store.dispatch('GET_FINISH_ORDERS_FROM_API');
+
     if (count < 60) {
       count++;
       timerId = setTimeout(fetchSentOrders, 60000);

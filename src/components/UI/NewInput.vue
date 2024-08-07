@@ -135,7 +135,8 @@ const updateInput = (event) => {
     }
 
     &_warning {
-      color: var(--warning);
+      //color: var(--warning);
+      color: var(--danger);
     }
   }
 }

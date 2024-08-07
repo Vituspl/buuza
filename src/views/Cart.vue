@@ -4,13 +4,20 @@
     <DrawerHead/>
 
     <!--  Показать при условии  -->
-    <div class="block h-full items-center">
+    <div v-if="!cartTotalCost && !orderDone" class="block h-full items-center">
       <CartEmpty
-          v-if="!cartTotalCost && !orderDone"
           title="Ваша Корзина пустая"
           description="Добавьте хотя бы одно блюдо, чтобы сделать заказ"
           image-url="/package-icon.png"
       />
+
+      <div class="mt-12 items-center text-center">
+          <router-link to="/track">
+            <new-button
+                label="Отследить свой заказ"
+            />
+          </router-link>
+      </div>
     </div>
     <!--  Показываем компонент <InfoBlock> по условию  -->
     <div v-if="!cartTotalCost || orderDone"
@@ -21,7 +28,6 @@
     >
       <!--  Показать при условии  -->
       <CartEmpty
-          v-if="orderDone"
           title="Заказ оформлен"
           :description="`Ваш заказ: №${item.id} от ${item.dateOrder} принят в ${item.timeOrder}, мы Вам перезвоним в течении 15 минут`"
           image-url="/order-success-icon.png"
@@ -30,7 +36,6 @@
       <div class="mt-12 text-center">
         <router-link to="/track">
           <new-button
-              v-if="orderDone"
               label="Отследить заказ"
               @click="trackOrder(item.id)"
           />
@@ -106,12 +111,15 @@ import AppFigure from '@/components/AppFigure.vue';
 import DrawerHead from '@/components/DrawerHead.vue';
 import CartEmpty from '@/components/CartEmpty.vue';
 
+import NewInput from '@/components/UI/NewInput.vue';
 import NewModal from '@/components/UI/NewModal.vue';
 import NewUserForm from '@/components/NewUserForm.vue';
 import NewButton from '@/components/UI/NewButton.vue';
 
 import {useStore} from 'vuex';
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
+import {helpers, maxLength, minLength, numeric, required, requiredIf} from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
 
 defineProps({
   product: {
@@ -152,8 +160,8 @@ const cartTotalCost = computed(function () {
 });
 
 // Расчет стоимости заказа для Самовывоза
-const pickupTotalCost = computed(()=>
-  cartTotalCost.value - Math.round((cartTotalCost.value * 10) / 100)
+const pickupTotalCost = computed(() =>
+    cartTotalCost.value - Math.round((cartTotalCost.value * 10) / 100)
 );
 
 const modalVisible = ref(false);
@@ -185,73 +193,32 @@ const trackOrder = (orderId) => {
   emit('trackOrder', {orderId});
 };
 
-/*const order = computed(()=>{
-  for(let order in orders){
-    console.log(order);
-    console.log(order.id);
-    console.log(order.dateOrder);
-    console.log(order.timeOrder);
+/*const userPhone = ref('');
+
+const rules = computed(() => ({
+    userPhone: {
+      required: helpers.withMessage(`Обязательно надо заполнить`, required),
+          maxLength: helpers.withMessage('Надо ввести: не более 10 цифр', maxLength(14)),
+          minLength: helpers.withMessage(`Надо ввести: не менее 10 цифр`, minLength(14)),
+    },
+}));
+
+const v$ = useVuelidate(rules, {userPhone, $stopPropagation: true});
+
+const allMyOrders = () => {
+
+};
+
+const submitForm = () => {
+// Проверяем соблюдение всех правил (rules) в форме инпутов
+  v$.value.$touch();
+  // console.log(v$.value.$errors);
+  if (v$.value.$errors.length !== 0) {
+    return alert('Проверьте правильность заполнения');
   }
-})*/
-// const orderId = ref(null);
-// const activeDelivery = ref('');
-// const activePayment = ref('');
+  allMyOrders();
 
-
-// Определяем пустую Корзину
-// const cartIsEmpty = computed(() => cart.value.length === 0);
-// Деактивируем кнопку "Оформить заказ"
-/*const buttonDisabled = computed(() =>
-    // isCreating.value || cartIsEmpty.value
-    cartIsEmpty.value
-);*/
-
-// Создаем данные Заказчика
-/*const createUser = (user) => {
-  // user.value = user;
-  store.dispatch('ADD_USER', user);
-};*/
-// console.log(users.value);
-// console.log(user.value);
-
-/*const createOrder = (delivery, payment) => {
-  orderDone.value = true;
-  // store.dispatch('CREATE_ORDER', cartTotalCost.value, orderDone.value, {date});
-  store.dispatch('CREATE_ORDER', cartTotalCost.value, delivery, payment)
-};*/
-
-// Функция передает POST запрос на сервер, при оформлении заказа, с массивом cart и ключом items
-/*const createOrder = async () => {
-  try {
-    // isCreating.value = true;
-
-<<<<<<< HEAD
-    const {data} = await axios.post(`https://1102df40d9a2f61e.mokky.dev/orders`, {
-          orderItems: cart.value,
-          user: user.value,
-          descriptionOrder: `${date}`,
-=======
-    const {data} = await axios.post(`https://9b25d366b1aceedb.mokky.dev/orders`, {
-          items: cart.value,
-          descriptionOrder: `Дата заказа ${date}`,
->>>>>>> d183177a8dfecd7291059b2705d90f2978d0e653
-          totalPrice: `Общая стоимость заказа  ${cartTotalCost.value} рублей`,
-        },
-    );
-
-// Очищает Корзину после оформления заказа
-    await store.dispatch('CLEAR_CART');
-
-// Получаем номер выполненного заказа в виде id
-    orderDone.value = data.id;
-    console.log(orderDone.value);
-  } catch (err) {
-    console.log(err);
-  }
-
-  finally {
-    isCreating.value = false;
-  }
+  return alert('Отправлено');
 };*/
 </script>
 

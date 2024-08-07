@@ -229,14 +229,6 @@ const timeoutFetchOrders = () => {
 };
 
 onMounted(() => {
-  // fetchOrders()
-  // setInterval(fetchOrders, 60000);
-  // Здесь рекурсивный вызов setTimeout каждую минуту (точнее чем setInterval)
-  /* let timerId = setTimeout(function fetchSentOrders() {
-     store.dispatch('GET_ORDERS_FROM_API');
-     timerId = setTimeout(fetchSentOrders, 60000);
-   }, 60000);*/
-
   timeoutFetchOrders();
 });
 </script>

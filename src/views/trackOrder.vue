@@ -2,11 +2,12 @@
   <div>
     <back-menu/>
     <h2 class="grid justify-items-center text-xl font-bold mb-4">Отслеживание Вашего Заказа</h2>
-    <h3 class="grid justify-items-center text-lg text-red-700 font-bold mb-4">Не выходите с этой страницы</h3>
+    <h3 class="grid justify-items-center text-lg text-red-700 font-bold mb-4">
+      Отслеживание заказа есть в корзине
+    </h3>
 
     <div v-for="item in order"
          :key="item.id"
-         :order="order"
          @trackOrder="order"
     >
       <div class="mt-4">
@@ -15,8 +16,8 @@
             <h3 class="pt-4"><b>Состояние Заказа:</b></h3>
             <div
                 class="flex justify-between ml-2 mt-2"
-                 v-for="sentOrder in sentOrders"
-                 :key="sentOrder.id"
+                v-for="sentOrder in sentOrders"
+                :key="sentOrder.id"
             >
               <h2 class="mt-4 font-bold text-xl text-green-500"
                   v-if="!sentOrder.order.id === item.id"
@@ -79,7 +80,7 @@
                 <ul class="flex-col">
                   <li>Заказчик: <b class="text-lg text-red-500">{{ user.userName }}</b></li>
                   <li>Телефон заказчика: <b class="text-lg text-red-500"> +7 {{ user.userPhone }}</b></li>
-<!--                  <li>Адрес доставки заказчика: <b class="text-lg text-red-500">{{ user.userAddress }}</b></li>-->
+                  <!--                  <li>Адрес доставки заказчика: <b class="text-lg text-red-500">{{ user.userAddress }}</b></li>-->
                 </ul>
 
                 <div class="flex-col">
@@ -102,37 +103,49 @@
               <h2><b>Состав заказа:</b></h2>
 
               <button
-                  :class="['btn-new', `btn-new_${color}`]"
-                  v-on:click="visible=!visible"
+                  class="btn-info"
+                  :style="{
+            'background-color': visible ? background : '',
+            'color': visible ? color : ''
+            }"
+                  @:click="visible = !visible"
               >
                 {{ visible ? 'Свернуть' : 'Развернуть' }}
               </button>
 
               <div v-show="visible"
-                  v-for="(el) in item.orderItems"
-                  :key="el.id"
+                   v-for="(el) in item.orderItems"
+                   :key="el.id"
               >
-                <ul class="border-solid border-2 border-indigo-600 pl-4 mb-2">
-                  <li>Наименование блюда: <b class="ml-10 text-xl text-green-600">{{ el.title }}</b></li>
-                  <li>Количество блюд: <b class="ml-20 text-xl text-orange-600">{{ el.quantity }}</b></li>
-                  <li>Стоимость блюда: <b class="ml-20 text-lg">{{ el.price }} рублей</b></li>
-                  <li>Суммарная стоимость: <b class="ml-10 text-lg">{{ el.price * el.quantity }} рублей</b></li>
+                <ul class="border-solid border-2 border-indigo-600 rounded-xl pl-2 mb-2">
+                <img class="w-28 h-28 mt-2 rounded-xl hover:scale-150 transition duration-300 ease-out cursor-pointer" :src="el.imageUrl" :alt="el.title"/>
+                  <li class="text-sm">
+                    Наименование блюда: <b class="ml-10 text-xl text-green-600"><br/>{{ el.title }}</b>
+                  </li>
+                  <li class="text-sm">
+                    Количество блюд: <b class="ml-20 text-xl text-orange-600">{{ el.quantity }}</b>
+                  </li>
+                  <li class="text-sm">
+                    Стоимость блюда: <b class="ml-20 text-lg">{{ el.price }} рублей</b>
+                  </li>
+                  <li class="text-sm">
+                    Суммарная стоимость: <b class="ml-12 text-lg">{{ el.price * el.quantity }} рублей</b>
+                  </li>
                 </ul>
               </div>
 
-              <span>Общая стоимость заказа:
+              <div>Общая стоимость заказа:
                 <br/>
-
-                <b v-if="item.delivery === 'Доставка Курьером' || item.delivery === 'Заказы в кафе'"
+                <p v-if="item.delivery === 'Доставка Курьером' || item.delivery === 'Заказы в кафе'"
                    class="ml-4 text-2xl text-orange-500">
-                   {{ item.totalPrice }} рублей
-                </b>
+                  <b>{{ item.totalPrice }} рублей</b>
+                </p>
 
-              <b v-else-if="item.delivery === 'Самовывоз (-10%)'"
-                 class="ml-4 text-2xl text-orange-500">
-              {{ item.pickupPrice }} рублей
-              </b>
-              </span>
+                <p v-else-if="item.delivery === 'Самовывоз (-10%)'"
+                   class="ml-4 text-2xl text-orange-500">
+                  <b>{{ item.pickupPrice }} рублей</b>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -150,25 +163,28 @@ import {useStore} from 'vuex';
 defineProps({
   order: {
     type: Array,
-    // required: true,
+    required: true,
   },
-  sentOrder:{
-    type: Array,
-  },
-  finishOrder:{
-    type: Array,
-  },
-  id: {
-    type: Number,
-  },
-  color: {
-    type: String,
-    default: 'primary'
-  },
-  item: String,
+  // sentOrder: {
+  //   type: Array,
+  // },
+  // finishOrder: {
+  //   type: Array,
+  // },
+  // id: {
+  //   type: Number,
+  // },
+  // color: {
+  //   type: String,
+  //   default: 'primary'
+  // },
+  // item: String,
 });
 
 const visible = ref(false);
+
+const background = ref('orange');
+const color = ref('#0e4199');
 
 const store = useStore();
 
@@ -180,12 +196,7 @@ const sentOrders = computed(() => store.getters.sentOrders);
 // console.log(sentOrders.value);
 
 const finishOrders = computed(() => store.getters.finishOrders);
-console.log(finishOrders.value);
-
-const deleteOrder = (order, index) => {
-  store.dispatch('REMOVE_FROM_USER', index);
-  store.dispatch('DELETE_ORDER', {order, index});
-};
+// console.log(finishOrders.value);
 
 // Здесь рекурсивный вызов setTimeout каждую минуту (точнее чем setInterval)
 // Если ожидание отправки заказа превысило 60 минут, то отслеживание должно прекратиться
@@ -210,51 +221,31 @@ onMounted(() => {
 
 </script>
 
-<style lang="scss" scoped>
-.btn-new {
+<style scoped>
+.btn-info {
+  margin-top: 6px;
   margin-bottom: 6px;
   padding: 0 20px;
   width: 150px;
   height: 30px;
+  background: #6979f8;
   color: #ffffff;
   border-radius: 7px;
   border: none;
   cursor: pointer;
   font-size: 15px;
-  transition: .2s;
+  transition: .4s;
+}
 
-  &_primary {
-    background: var(--primary);
-    border: 1px solid var(--primary);
+.btn-info:hover {
+  background: #FFC7A6;
+  color: #0e4199;
+}
 
-    &:enabled:hover {
-      background: var(--primary-hover);
-    }
-  }
+.btn-info:active {
+  background: orange;
+  color: #0e4199;
 }
 </style>
-
-<!--/*
-let cities = [{ id: 121, name: 'г. Урюпинск' }, { id: 122, name: 'г. Париж' }, { id: 123, name: 'г. Москва' }, { id: 124, name: 'г. Штормград' }];
-let searchTerm = 'г. Москва';
-let cityId = cities.find(city => city.name === searchTerm).id
-console.log(cityId);
-*/
-
-// const orders = computed(() => store.getters.ORDERS);
-// console.log(orders);
-
-/*const orderId = ref('');
-console.log(orderId);
-
-const activeId = (id) => {
-  console.log(id);
-  orderId.value = id;
-};
-
-const orderTracked = computed((orderId) => {
-  return orders.value.filter((order) => order.id === orderId);
-});
-console.log(orderTracked.value);*/-->
 
 

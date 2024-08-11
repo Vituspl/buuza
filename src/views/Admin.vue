@@ -1,41 +1,19 @@
 <template>
   <div class="m-auto">
-    <div class="fixed top-0 left-100 w-full max-w-7xl flex-col z-10 pl-4 pr-4 bg-white opacity-90">
 
-      <div class="flex justify-between mt-4 mb-4 w-full">
-        <router-link to="/">
-          <NewButton
-              label="Назад в Меню"
-              color="primary"
-          />
-        </router-link>
-
-        <router-link to="/menu">
-          <NewButton
-              label="Редактирование Меню"
-              color="danger"
-          />
-        </router-link>
-
-        <div class="flex-col">
-          <NewButton
-              class="place-items-end"
-              label="Очистить заказы"
-              color="danger"
-              @click="clearOrders"
-          />
-          <p class="text-lg text-red-500 text-center font-bold mr-2 mb-2">Осторожно эта кнопка удалит все Заказы</p>
-        </div>
-      </div>
-
-      <div class="flex gap-4 mb-4">
-        <OrdersNav class="font-bold"/>
-      </div>
-      <h1 class="grid justify-items-center text-2xl font-bold mb-4">{{ props.title }}</h1>
-    </div>
+    <head-orders-info :title="title" :clearOrders="clearOrders"/>
 
     <div class="mt-52">
-      <div
+      <admin-info
+          v-for="(order, index) in filterOrders"
+          :key="order.id"
+          :id="order.id"
+          :order="order"
+          :orders="orders"
+          @sentOrder="sentOrder(order, index)"
+          @deleteOrder="deleteOrder(order, index)"
+      />
+<!--      <div
           class="bg-slate-200 pl-4 pr-4 mb-4"
           v-for="(order, index) in filterOrders"
           :key="order.id"
@@ -147,45 +125,27 @@
             </a>
           </div>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
 
 <script setup>
-import NewButton from '@/components/UI/NewButton.vue';
-import OrdersNav from '@/components/OrdersNav.vue';
+import AdminInfo from '@/components/OrdersInfo/AdminInfo.vue';
+import HeadOrdersInfo from '@/components/OrdersInfo/HeadOrdersInfo.vue';
 
-
-import {computed, onMounted, ref} from 'vue';
 import {useStore} from 'vuex';
+import {computed, onMounted, ref} from 'vue';
 
 const props = defineProps({
-  orders: {
-    type: Array,
-  },
   title: {
     type: String,
     default: 'Все Заказы',
   },
-  user: {
-    userName: String,
-    userPhone: String,
-    userAddress: String,
-    quantityCutlery: String,
-    userNote: String,
-  },
-  color: {
-    type: String,
-    default: 'primary'
-  },
 });
-
-const visible = ref(false);
 
 const store = useStore();
 
-// const order = computed(() => store.getters.ORDER);
 const orders = computed(() => store.getters.ORDERS);
 // console.log(orders.value);
 
@@ -232,30 +192,6 @@ onMounted(() => {
   timeoutFetchOrders();
 });
 </script>
-
-<style lang="scss" scoped>
-.btn-new {
-  margin-bottom: 6px;
-  padding: 0 20px;
-  width: 150px;
-  height: 30px;
-  color: #ffffff;
-  border-radius: 7px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  transition: .2s;
-
-  &_primary {
-    background: var(--primary);
-    border: 1px solid var(--primary);
-
-    &:enabled:hover {
-      background: var(--primary-hover);
-    }
-  }
-}
-</style>
 
 
 

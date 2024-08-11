@@ -1,8 +1,7 @@
 <template>
-  <div>
     <div class="bg-slate-200 pl-4 pr-4 mb-4">
       <div class="flex justify-center items-center pt-2 mb-2">
-        <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.order.id }} </b></span>
+        <span class="pr-4">Заказ: <b class="text-lg text-red-500"> № {{ order.order.id }} </b></span>
 
         <button
             class="btn-info"
@@ -19,28 +18,19 @@
       <div v-show="visible">
         <div class="grid justify-items-center pt-2 mb-2">
           <div class="flex gap-8">
-            <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.order.order.dateOrder }} </b></span>
-            <span>Время заказа: <b class="text-lg text-red-500"> {{ order.order.order.timeOrder }} </b></span>
+            <span>Дата заказа: <b class="text-lg text-red-500"> {{ order.order.dateOrder }} </b></span>
+            <span>Время заказа: <b class="text-lg text-red-500"> {{ order.order.timeOrder }} </b></span>
           </div>
 
           <div class="flex gap-8">
-            <span>Дата отправки: <b class="text-lg text-red-500"> {{ order.order.dateSentOrder }} </b></span>
-            <span class="flex gap-2">Время отправки: <b class="text-lg text-red-500"> {{
-                order.order.timeSentOrder
-              }} </b></span>
-          </div>
-
-          <div class="flex gap-8">
-            <span>Дата исполнения: <b class="text-lg text-red-500"> {{ order.dateFinishOrder }} </b></span>
-            <span>Время исполнения: <b class="text-lg text-red-500"> {{ order.timeFinishOrder }} </b></span>
+            <span>Дата отправки: <b class="text-lg text-red-500"> {{ order.dateSentOrder }} </b></span>
+            <span>Время отправки: <b class="text-lg text-red-500"> {{ order.timeSentOrder }} </b></span>
           </div>
         </div>
 
         <div>
-          <h2 class="text-lg"><b>Данные заказчика:</b></h2>
-          <div
-              v-for="(user) in order.order.order.userItems"
-              :key="user.id">
+          <h2><b>Данные заказчика:</b></h2>
+          <div v-for="(user) in order.order.userItems" :key="user.id">
             <ul class="flex gap-10 mb-2">
               <li>Телефон заказчика: <b class="text-lg text-red-500"> +7 {{ user.userPhone }}</b></li>
               <li>Заказчик: <b class="text-lg text-red-500">{{ user.userName }}</b></li>
@@ -48,8 +38,8 @@
             </ul>
             <div class="flex-col">
               <div class="flex gap-10 mb-2">
-                <p>Тип Заказа: <b class="text-lg text-red-500">{{ order.order.order.delivery }}</b></p>
-                <p>Вид Оплаты: <b class="text-lg text-red-500">{{ order.order.order.payment }}</b></p>
+                <p>Тип Заказа: <b class="text-lg text-red-500">{{ order.order.delivery }}</b></p>
+                <p>Вид Оплаты: <b class="text-lg text-red-500">{{ order.order.payment }}</b></p>
               </div>
             </div>
             <ul>
@@ -65,7 +55,8 @@
 
         <div class="flex flex-col text-lg mb-2">
           <h2><b>Состав заказа:</b></h2>
-          <div v-for="(el) in order.order.order.orderItems"
+
+          <div v-for="(el) in order.order.orderItems"
                :key="el.id"
           >
             <div class="flex justify-between items-center border-solid border-2 border-indigo-600 pl-4 mb-2">
@@ -82,22 +73,49 @@
 
       <div class="flex text-lg">
         <h2><b>Общая стоимость заказа:</b></h2>
-        <p class="ml-4 text-2xl text-orange-500">
+        <p v-if="order.order.delivery === 'Доставка Курьером' || order.order.delivery === 'Заказы в кафе'"
+           class="ml-4 text-2xl text-orange-500">
 
-          <b>{{ order.order.order.totalPrice }} рублей</b>
+          <b>{{ order.order.totalPrice }} рублей</b>
+        </p>
+
+        <p v-else-if="order.order.delivery === 'Самовывоз (-10%)'"
+           class="ml-4 text-2xl text-orange-500">
+
+          <b>{{ order.order.pickupPrice }} рублей</b>
         </p>
       </div>
 
-      <div class="flex justify-between mt-2">
-        <h2 class="text-lg"><b>Состояние Заказа:</b></h2>
+      <div class="flex justify-start mt-2">
+        <h2 class="text-lg  mr-20"><b>Состояние Заказа:</b></h2>
 
-        <h2 class="font-bold text-xl text-green-500">
-          Заказ № {{ order.order.order.id }} Исполнен в {{ order.timeFinishOrder }} ({{ order.dateFinishOrder }})
+        <h2 v-if="order.order.delivery === 'Доставка Курьером' || order.order.delivery === 'Заказы в кафе'"
+            class="font-bold text-xl text-green-500"
+        >
+          Заказ № {{ order.order.id }} отправлен в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
         </h2>
 
+        <h2 v-else-if="order.order.delivery === 'Самовывоз (-10%)'"
+            class="font-bold text-xl text-green-500"
+        >
+          Заказ № {{ order.order.id }} Готов в {{ order.timeSentOrder }} ({{ order.dateSentOrder }})
+        </h2>
+      </div>
+
+      <div class="flex justify-between">
         <a class="flex items-center"
-           @click="deleteFinishOrder">
-          <h2 class="font-bold">Удалить Заказ:</h2>
+           @click="finishSentOrder">
+          <h2 class="font-bold">Заказ № {{ order.order.id }} Исполнен: (Оплачен)</h2>
+          <img
+              class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
+              src="/close-full-red-48.svg"
+              alt="Close"
+          />
+        </a>
+
+        <a class="flex items-center"
+           @click="deleteSentOrder">
+          <h2 class="font-bold">Отмена Заказа № {{ order.order.id }}:</h2>
           <img
               class="opacity-100 color:red mb-2 hover:opacity-100 cursor-pointer transition"
               src="/close-full-red-48.svg"
@@ -106,14 +124,13 @@
         </a>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
 import {ref} from 'vue';
 
 defineProps({
-  finishOrders: {
+  sentOrders: {
     type: Array,
   },
   order: {
@@ -121,15 +138,19 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['deleteFinishOrder',]);
+const emits = defineEmits(['finishSentOrder', 'deleteSentOrder', ]);
 
 const visible = ref(false);
 
 const background = ref('orange');
-const color = ref('#0e4199')
+const color = ref('#0e4199');
 
-const deleteFinishOrder = () => {
-  emit('deleteFinishOrder');
+const finishSentOrder = () => {
+  emits('finishSentOrder');
+};
+
+const deleteSentOrder = () => {
+  emits('deleteSentOrder');
 };
 </script>
 
@@ -148,13 +169,14 @@ const deleteFinishOrder = () => {
   font-size: 15px;
   transition: .4s;
 }
+
 .btn-info:hover {
   background: #FFC7A6;
   color: #0e4199;
 }
+
 .btn-info:active {
   background: orange;
   color: #0e4199;
 }
 </style>
-

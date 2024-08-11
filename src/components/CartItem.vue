@@ -1,17 +1,17 @@
 <template>
   <div class="flex flex-col bg-gray-400/60 item-center border border-slate-200 p-2 rounded-xl gap-2 mb-2">
     <div class="flex items-center bg-white shadow-lg border border-slate-200 p-2 rounded-xl gap-1">
-      <img class="w-28 h-28" :src="imageUrl" :alt="title"/>
+      <img class="w-28 h-28 rounded-xl hover:scale-150 transition duration-300 ease-out cursor-pointer" :src="imageUrl" :alt="title"/>
 
       <div class="flex flex-col flex-1">
-        <b class="pl-4">{{ id }}</b>
+        <p class="pl-4"><b>{{ id }}</b></p>
 
-        <b class="pl-4">{{ title }}</b>
+        <p class="pl-4"><b>{{ title }}</b></p>
 
         <p class="pl-4">"{{ ingredients }}"</p>
 
         <div class="flex justify-between pl-4 mt-2">
-          <b class="flex">{{ price }} руб.</b>
+          <p class="flex"><b>{{ price }} руб.</b></p>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
           <a @click="decrementItem">
             <img class="cursor-pointer" src="/images/minus-50-red.svg" width="30px" alt="minus"/>
           </a>
-          <b class="text-2xl pl-4 pr-4">{{ quantity }}</b>
+          <p class="text-2xl pl-4 pr-4"><b>{{ quantity }}</b></p>
           <a @click="incrementItem">
             <img class="cursor-pointer" src="/images/plus-50-green.svg" width="30px" alt="minus"/>
           </a>

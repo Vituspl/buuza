@@ -3,7 +3,6 @@
     <AppFigure/>
     <DrawerHead/>
 
-    <!--  Показать при условии  -->
     <div v-if="!cartTotalCost && !orderDone" class="block h-full items-center">
       <CartEmpty
           title="Ваша Корзина пустая"
@@ -19,14 +18,14 @@
           </router-link>
       </div>
     </div>
-    <!--  Показываем компонент <InfoBlock> по условию  -->
-    <div v-if="!cartTotalCost || orderDone"
+
+    <div v-else-if="!cartTotalCost || orderDone"
          class="block h-full items-center"
          v-for="item in order"
          :key="item.id"
          :order="order"
     >
-      <!--  Показать при условии  -->
+
       <CartEmpty
           title="Заказ оформлен"
           :description="`Ваш заказ: №${item.id} от ${item.dateOrder} принят в ${item.timeOrder}, мы Вам перезвоним в течении 15 минут`"
@@ -192,36 +191,5 @@ const isCreating = () => {
 const trackOrder = (orderId) => {
   emit('trackOrder', {orderId});
 };
-
-/*const userPhone = ref('');
-
-const rules = computed(() => ({
-    userPhone: {
-      required: helpers.withMessage(`Обязательно надо заполнить`, required),
-          maxLength: helpers.withMessage('Надо ввести: не более 10 цифр', maxLength(14)),
-          minLength: helpers.withMessage(`Надо ввести: не менее 10 цифр`, minLength(14)),
-    },
-}));
-
-const v$ = useVuelidate(rules, {userPhone, $stopPropagation: true});
-
-const allMyOrders = () => {
-
-};
-
-const submitForm = () => {
-// Проверяем соблюдение всех правил (rules) в форме инпутов
-  v$.value.$touch();
-  // console.log(v$.value.$errors);
-  if (v$.value.$errors.length !== 0) {
-    return alert('Проверьте правильность заполнения');
-  }
-  allMyOrders();
-
-  return alert('Отправлено');
-};*/
 </script>
 
-<style scoped>
-
-</style>
